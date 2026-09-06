@@ -467,6 +467,31 @@
 .to-top:hover { color: var(--accent); border-color: var(--accent); }
 .to-top svg { width: 1.15rem; height: 1.15rem; }
 
+/* ---- The engraving plate ------------------------------------------------ */
+
+/* A fixed sheet over the page, printed in ink that multiplies into the paper
+   the way a real impression would. It never takes the pointer. */
+.engraving {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition: opacity 1.2s var(--ease);
+}
+
+.engraving[data-ready="true"] { opacity: 1; }
+
+:root[data-theme="night"] .engraving { mix-blend-mode: screen; }
+
+/* Behind the measure rather than beside it, the plate has to give way. */
+@media (max-width: 64rem) {
+  .engraving[data-ready="true"] { opacity: 0.55; }
+}
+
 /* ---- Reveal on scroll --------------------------------------------------- */
 
 .reveal {

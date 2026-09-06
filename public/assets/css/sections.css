@@ -341,40 +341,6 @@
   color: var(--ink-mute);
 }
 
-/* ---- Stats -------------------------------------------------------------- */
-
-.stats {
-  display: grid;
-  gap: var(--space-m);
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  margin-top: var(--space-m);
-  text-align: center;
-}
-
-.stat { padding-inline: var(--space-2xs); }
-
-.stat + .stat { border-left: 1px solid var(--rule); }
-
-.stat__value {
-  display: block;
-  font-family: var(--font-display);
-  font-size: var(--step-3);
-  font-weight: 900;
-  line-height: 1;
-  font-variant-numeric: lining-nums;
-  color: var(--accent);
-}
-
-.stat__label {
-  display: block;
-  margin-top: var(--space-3xs);
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-}
-
 /* ---- II. Craft ---------------------------------------------------------- */
 
 .craft {
@@ -415,7 +381,6 @@
 
 @media (max-width: 52rem) {
   .about { grid-template-columns: 1fr; }
-  .stat + .stat { border-left: 0; }
 }
 
 /* ---- III. Education ----------------------------------------------------- */
@@ -458,15 +423,6 @@
   font-family: var(--font-mono);
   font-size: var(--step--1);
   color: var(--ink-mute);
-}
-
-.education__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3xs);
-  margin-top: var(--space-s);
-  padding-top: var(--space-s);
-  border-top: 1px dotted var(--rule);
 }
 
 /* ---- IV. At the university ---------------------------------------------- */

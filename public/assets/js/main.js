@@ -11,7 +11,7 @@ import { initNavigation } from './modules/navigation.js';
 import { initScrollEffects } from './modules/scroll-effects.js';
 import { initDateline } from './modules/dateline.js';
 import { initTypewriter } from './modules/typewriter.js';
-import { initCounters } from './modules/counters.js';
+import { initEngraving } from './modules/engraving.js';
 import { initCommandPalette } from './modules/command-palette.js';
 import { initContact } from './modules/contact.js';
 
@@ -23,7 +23,7 @@ const modules = [
   initScrollEffects,
   initDateline,
   initTypewriter,
-  initCounters,
+  initEngraving,
   initCommandPalette,
   initContact,
 ];

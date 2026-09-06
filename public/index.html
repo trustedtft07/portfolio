@@ -56,6 +56,9 @@
 <body>
 <a class="skip-link" href="#main">Skip to the main text</a>
 
+<!-- The engraved bust: a 3D model cut down to its visible lines. -->
+<canvas class="engraving" id="engraving" aria-hidden="true"></canvas>
+
 <!-- ==========================================================================
      TOP BAR — a slim running head that appears once the front page scrolls by
      ======================================================================= -->
@@ -308,26 +311,6 @@
       </aside>
     </div>
 
-    <div class="rule rule--double"></div>
-
-    <ul class="stats reveal">
-      <li class="stat">
-        <span class="stat__value" data-count-to="2024">0000</span>
-        <span class="stat__label">Began at Universitas Sriwijaya</span>
-      </li>
-      <li class="stat">
-        <span class="stat__value" data-count-to="3" data-count-pad="2">00</span>
-        <span class="stat__label">Game jams entered</span>
-      </li>
-      <li class="stat">
-        <span class="stat__value" data-count-to="11" data-count-pad="2">00</span>
-        <span class="stat__label">Months on the HMIF staff</span>
-      </li>
-      <li class="stat">
-        <span class="stat__value" data-count-to="2028">0000</span>
-        <span class="stat__label">Expected graduation</span>
-      </li>
-    </ul>
   </div>
 </section>
 
@@ -434,9 +417,6 @@
           two are behind me. It is where the reading list and the compiler started arguing with
           each other in public, which is the useful part.
         </p>
-        <p class="education__tags">
-          <span class="tag">Java</span><span class="tag">C#</span>
-        </p>
       </li>
 
       <li class="education__item card reveal">
@@ -449,9 +429,6 @@
           A state boarding madrasah in Jambi, on the sciences stream. The syllabus was
           mathematics and physics; the tools I picked up beside it were Android Studio and
           Blender, and they are the reason the rest of this page exists.
-        </p>
-        <p class="education__tags">
-          <span class="tag">Android Studio</span><span class="tag">Blender</span>
         </p>
       </li>
     </ol>
@@ -781,7 +758,6 @@
       <nav class="colophon__nav" aria-label="More">
         <p class="colophon__heading">More</p>
         <ul>
-          <li><a href="#gamejams">Game jams</a></li>
           <li><a href="#letters">Letters</a></li>
           <li><a href="#contact">Correspondence</a></li>
         </ul>
@@ -793,6 +769,11 @@
           Set in <em>EB&nbsp;Garamond</em> and <em>Playfair&nbsp;Display</em>, with
           <em>Courier&nbsp;Prime</em> for the marginalia. Written by hand in plain HTML, CSS and
           JavaScript — no framework, no build step — and served from the Cloudflare edge.
+        </p>
+        <p class="colophon__credit">
+          The turning bust is a 3D model by Eric&nbsp;Wilson, used under
+          <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener license">CC&nbsp;BY</a>
+          and re-cut here as hidden-line WebGL.
         </p>
       </div>
     </div>

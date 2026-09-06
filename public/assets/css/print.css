@@ -34,6 +34,7 @@ body::before { display: none; }
 /* Screen furniture that means nothing on paper. */
 .topbar,
 .drawer,
+.engraving,
 .ticker,
 .scroll-cue,
 .to-top,
@@ -144,9 +145,6 @@ body::before { display: none; }
 .craft,
 .education,
 .landmarks { grid-template-columns: 1fr 1fr; gap: 4mm; }
-
-.stats { gap: 3mm; }
-.stat + .stat { border-left: 0; }
 
 .craft__item,
 .education__item,
