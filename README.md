@@ -16,36 +16,44 @@ dashboard. Double rules, roman numerals for the section numbers, small-caps
 labels, drop caps, wax seals for the certificates, and a fleuron (`❦`) as the
 section ornament.
 
-Over the whole page sits one moving element: a classical bust, drawn as a
-hidden-line engraving. It is a real 3D model rendered with hand-written WebGL —
-about two hundred lines in `engraving.js`, with its own matrix maths, its own
-minimal glTF reader and two four-line shaders. No library is loaded and nothing
-is bundled. The solid goes into the depth buffer alone, so only the edges a
-burin would actually cut are inked; the drawing turns with the scroll and leans
-toward the pointer, and holds still under `prefers-reduced-motion`. The plate is
-multiplied into the paper in the day edition and screened over the ink at night,
-with the colour set from `--engraving-ink` in `tokens.css`.
+Over the whole page sits one moving element: a **plate**, cut in hand-written
+WebGL. About five hundred lines in `engraving.js`, with its own matrix maths,
+its own minimal glTF reader, its own coastline reader and two four-line
+shaders. No library is loaded and nothing is bundled.
 
-The model is *Bust* by Eric Wilson, used under
-[CC BY](https://creativecommons.org/licenses/by/3.0/) and taken from
-<https://poly.pizza/m/eLjY6Zwl4uw>. `public/assets/models/bust.glb` is that file
-stripped to its POSITION accessor and triangle indices — the normals and
-materials are not needed, and dropping them halved it to 163 KB. The welding,
-crease detection and edge list are all computed in the browser at load.
+It has two acts, and the scroll is what turns the page between them:
 
-| Role | Face |
+| | |
 |---|---|
-| Display headings | Playfair Display |
-| Body text | EB Garamond |
-| Labels, tags, meta | Courier Prime |
+| **I.** | A classical **bust**, for the front matter — a real 3D model drawn as a hidden-line engraving. |
+| **II.** | A terrestrial **globe**, from the education section onward: real coastlines on a fifteen-degree graticule, hung in a tilted meridian ring and turned so Sumatra faces the reader, with Jambi and Palembang labelled the way a plate in an atlas would label them. |
 
-All three are self-hosted from `assets/fonts/` (latin and latin-ext subsets
-only) so the page makes no third-party requests at all.
+In both acts the solid is drawn into the depth buffer alone, so only the edges
+a burin would actually cut are inked. The pointer leans the stage; the scroll
+turns it; the loop stops as soon as the motion settles, and never starts at all
+under `prefers-reduced-motion`. The plate is multiplied into the paper in the
+day edition and screened over the ink at night, with the colour set from
+`--engraving-ink` in `tokens.css`.
 
-Two editions share one set of tokens: a **day** edition printed on aged paper
-and a **night** edition printed on ink. The choice is stored in
-`localStorage` and applied before first paint by an inline script, so the page
-never flashes the wrong one.
+The atlas labels are ordinary HTML. Every frame the module projects each
+place's point through the same matrix the plate is drawn with, moves the label
+there, and fades it out as the point turns away round the limb. The stepped
+leader — a dot on the place, a stem, then an arm to the name — is pure CSS, so
+the two labels can be separated by `--lift` and `--arm` without the dots
+moving off their coordinates.
+
+A draughtsman's compass point trails the pointer as well. It leaves the real
+cursor alone, and hides itself on touch screens.
+
+### Where the plate comes from
+
+| Asset | Source |
+|---|---|
+| `assets/models/bust.glb` | *Bust* by Eric Wilson, [CC BY](https://creativecommons.org/licenses/by/3.0/), from <https://poly.pizza/m/eLjY6Zwl4uw>. Stripped to its POSITION accessor and triangle indices — the normals and materials are not needed, and dropping them halved it to 163 KB. |
+| `assets/models/coastline.json` | [Natural Earth](https://www.naturalearthdata.com/) 110m coastline, public domain. Thinned to 0.3° and delta-encoded as hundredths of a degree, which keeps almost every number one or two characters long: 134 polylines, 4,888 points, 35 KB before compression. |
+
+Welding, crease detection, the graticule, the rings and the depth shell are all
+computed in the browser at load.
 
 ---
 
@@ -69,7 +77,7 @@ public/
     │   ├── main.js         entry point; wires the modules below
     │   └── modules/        one concern per file
     ├── fonts/              self-hosted woff2 subsets
-    ├── models/             bust.glb — positions and indices, nothing else
+    ├── models/             bust.glb, coastline.json — the plate's two subjects
     └── img/                favicon, social cover, app icons
 wrangler.jsonc              Cloudflare Worker + custom domains
 ```
@@ -137,12 +145,21 @@ add that `id` to the three navigation lists: `#section-nav` in the top bar,
 the masthead issue number both count `.section[id]` themselves, so neither
 needs touching.
 
-### Changing the engraved model
+### Changing what the plate draws
 
-Drop any `.glb` with a single mesh into `public/assets/models/`, point `MODEL`
-in `engraving.js` at it, and re-credit it in the colophon. The module centres
-and scales whatever it is given, so nothing else needs adjusting — but keep the
+Drop any `.glb` with a single mesh into `public/assets/models/`, point `BUST` in
+`engraving.js` at it, and re-credit it in the colophon. The module centres and
+scales whatever it is given, so nothing else needs adjusting — but keep the
 triangle count low: the crease pass is O(triangles) and runs on every load.
+
+`ACT` sets where the two acts hand over, as fractions of the whole scroll.
+`PLACES` sets what the globe is labelled with; each entry needs a matching
+`[data-pin]` in `#engraving-pins`, and the globe turns to whichever longitude
+is hard-coded in the act II yaw.
+
+Note that a bare `.bin` is worth avoiding for the data: one was tried first and
+never made it to the page in a browser with extensions installed. JSON costs
+about 15 KB more before compression and always arrives.
 
 ### Adding a certificate
 

@@ -56,8 +56,34 @@
 <body>
 <a class="skip-link" href="#main">Skip to the main text</a>
 
-<!-- The engraved bust: a 3D model cut down to its visible lines. -->
+<!-- ==========================================================================
+     THE PLATE — a hidden-line 3D stage: a bust for the front matter, a
+     terrestrial globe from the education section onward.
+     ======================================================================= -->
 <canvas class="engraving" id="engraving" aria-hidden="true"></canvas>
+
+<div class="pins" id="engraving-pins" aria-hidden="true">
+  <p class="pin" data-pin="jambi" style="--lift: -4.6rem; --arm: 3.4rem">
+    <span class="pin__text">
+      <span class="pin__name">Jambi</span>
+      <span class="pin__note">1&deg;36&prime;S 103&deg;37&prime;E &middot; school, 2020&ndash;2023</span>
+    </span>
+    <span class="pin__arm"></span>
+    <span class="pin__stem"></span>
+    <span class="pin__dot"></span>
+  </p>
+  <p class="pin" data-pin="palembang" style="--lift: 3.6rem; --arm: 5rem">
+    <span class="pin__text">
+      <span class="pin__name">Palembang</span>
+      <span class="pin__note">2&deg;59&prime;S 104&deg;46&prime;E &middot; Universitas Sriwijaya, since 2024</span>
+    </span>
+    <span class="pin__arm"></span>
+    <span class="pin__stem"></span>
+    <span class="pin__dot"></span>
+  </p>
+</div>
+
+<span class="dividers" id="dividers" aria-hidden="true"></span>
 
 <!-- ==========================================================================
      TOP BAR — a slim running head that appears once the front page scrolls by
@@ -771,9 +797,12 @@
           JavaScript — no framework, no build step — and served from the Cloudflare edge.
         </p>
         <p class="colophon__credit">
-          The turning bust is a 3D model by Eric&nbsp;Wilson, used under
-          <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener license">CC&nbsp;BY</a>
-          and re-cut here as hidden-line WebGL.
+          The plate behind the page is cut in hand-written WebGL. The bust is a 3D model by
+          Eric&nbsp;Wilson, used under
+          <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener license">CC&nbsp;BY</a>;
+          the coastlines on the globe are
+          <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural&nbsp;Earth</a>,
+          public domain.
         </p>
       </div>
     </div>

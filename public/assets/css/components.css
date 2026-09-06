@@ -480,7 +480,7 @@
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: multiply;
-  transition: opacity 1.2s var(--ease);
+  transition: opacity 1.4s var(--ease);
 }
 
 .engraving[data-ready="true"] { opacity: 1; }
@@ -489,7 +489,129 @@
 
 /* Behind the measure rather than beside it, the plate has to give way. */
 @media (max-width: 64rem) {
-  .engraving[data-ready="true"] { opacity: 0.55; }
+  .engraving[data-ready="true"] { opacity: 0.45; }
+}
+
+/* ---- Plate labels ------------------------------------------------------- */
+
+/* Atlas labels, tethered to a point on the globe by a stepped leader: a dot on
+   the place, a stem up or down away from its neighbour, then an arm to the
+   name. The script moves the whole pin; the leader is drawn in CSS. */
+.pins {
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  pointer-events: none;
+}
+
+.pin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  color: var(--accent);
+  transition: opacity 400ms var(--ease);
+  will-change: transform, opacity;
+}
+
+.pin__dot {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.pin__stem {
+  position: absolute;
+  left: 0;
+  top: min(0px, var(--lift));
+  width: 1px;
+  height: max(var(--lift), calc(-1 * var(--lift)));
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.pin__arm {
+  position: absolute;
+  top: var(--lift);
+  left: calc(-1 * var(--arm));
+  width: var(--arm);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.pin__text {
+  position: absolute;
+  top: var(--lift);
+  left: calc(-1 * var(--arm) - 0.5rem);
+  transform: translate(-100%, -50%);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.pin__name {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.pin__note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--step--2);
+  font-style: italic;
+  color: var(--ink-mute);
+}
+
+/* A narrow column has no room beside the globe for a name and a leader. */
+@media (max-width: 64rem) {
+  .pins { display: none; }
+}
+
+/* ---- Dividers ----------------------------------------------------------- */
+
+/* A draughtsman's compass point that trails the pointer. The real cursor is
+   left alone; this only keeps it company. */
+.dividers {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 42;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+}
+
+.dividers::before,
+.dividers::after {
+  content: "";
+  position: absolute;
+  background: color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
+.dividers::before { top: -4px; bottom: -4px; left: 50%; width: 1px; }
+.dividers::after { left: -4px; right: -4px; top: 50%; height: 1px; }
+
+.dividers[data-ready="true"] { opacity: 1; }
+
+@media (hover: none), (pointer: coarse) {
+  .dividers { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dividers { display: none; }
 }
 
 /* ---- Reveal on scroll --------------------------------------------------- */

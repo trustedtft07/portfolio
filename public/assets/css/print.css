@@ -35,6 +35,8 @@ body::before { display: none; }
 .topbar,
 .drawer,
 .engraving,
+.pins,
+.dividers,
 .ticker,
 .scroll-cue,
 .to-top,

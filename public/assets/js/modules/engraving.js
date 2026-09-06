@@ -1,18 +1,35 @@
 /**
- * The engraved bust.
+ * The engraved stage.
  *
- * A hidden-line drawing of a real 3D model, rendered with hand-written WebGL —
- * no library, no build step, in keeping with the rest of the page. The model is
- * a low-poly bust by Eric Wilson, used under CC BY, stripped to positions and
- * triangle indices; everything else the plate needs is derived here.
+ * One fixed plate behind the whole page, cut in hand-written WebGL — no
+ * library, no bundler, in keeping with the rest of the site. It has two acts,
+ * and the scroll is what turns the page between them:
  *
- * The drawing turns with the scroll and leans toward the pointer. The solid is
- * painted into the depth buffer alone, so only the lines a reader would see on
- * a real engraving survive.
+ *   I.  A classical bust, for the front matter. A real 3D model, drawn as a
+ *       hidden-line engraving.
+ *   II. A terrestrial globe, from the education section onward: Natural Earth
+ *       coastlines on a graticule, turned to Sumatra, with Jambi and Palembang
+ *       labelled the way a plate in an atlas would label them.
+ *
+ * In both acts the solid is painted into the depth buffer alone, so only the
+ * lines a burin would actually cut survive. The pointer leans the stage; the
+ * scroll turns it. Under `prefers-reduced-motion` nothing moves at all.
  */
 
-const MODEL = '/assets/models/bust.glb';
+const BUST = '/assets/models/bust.glb';
+const COASTLINE = '/assets/models/coastline.json';
+
 const CREASE = Math.cos((16 * Math.PI) / 180); /* keep an edge sharper than this */
+const RAD = Math.PI / 180;
+
+/* Where the two acts hand over, as a fraction of the whole scroll. */
+const ACT = { close: 0.24, open: 0.40 };
+
+/* The places the globe is turned to, and drawn for. */
+const PLACES = [
+  { id: 'jambi', lat: -1.6101, lon: 103.6131 },
+  { id: 'palembang', lat: -2.9761, lon: 104.7754 },
+];
 
 const VERT = `
 attribute vec3 aPos;
@@ -67,12 +84,23 @@ const perspective = (fovy, aspect, near, far) => {
   ]);
 };
 
-/* ---- Reading the model -------------------------------------------------- */
+/** Applies a 4x4 to a point and returns the clip-space result. */
+const apply = (m, x, y, z) => [
+  m[0] * x + m[4] * y + m[8] * z + m[12],
+  m[1] * x + m[5] * y + m[9] * z + m[13],
+  m[2] * x + m[6] * y + m[10] * z + m[14],
+  m[3] * x + m[7] * y + m[11] * z + m[15],
+];
+
+const ease = (t) => t * t * (3 - 2 * t);
+const clamp01 = (t) => Math.min(Math.max(t, 0), 1);
+
+/* ---- Act I: the bust ---------------------------------------------------- */
 
 const TYPED = { 5121: Uint8Array, 5123: Uint16Array, 5125: Uint32Array, 5126: Float32Array };
 const WIDTH = { SCALAR: 1, VEC2: 2, VEC3: 3, VEC4: 4 };
 
-async function loadModel(url) {
+async function loadBust(url) {
   const buffer = await (await fetch(url)).arrayBuffer();
   const view = new DataView(buffer);
   const total = view.getUint32(8, true);
@@ -103,10 +131,10 @@ async function loadModel(url) {
 
 /**
  * Welds the duplicated seam vertices, then keeps only the edges a burin would
- * actually cut: the silhouette, and the creases where two facets meet at an
- * angle. A full wireframe reads as mesh, not as a drawing.
+ * cut: the silhouette, and the creases where two facets meet at an angle. A
+ * full wireframe reads as mesh, not as a drawing.
  */
-function engrave(positions, triangles) {
+function cutBust(positions, triangles) {
   const seen = new Map();
   const welded = [];
   const to = new Int32Array(positions.length / 3);
@@ -126,15 +154,12 @@ function engrave(positions, triangles) {
   }
 
   const points = new Float32Array(welded);
-  const faces = new Uint32Array(triangles.length);
-  for (let i = 0; i < triangles.length; i++) faces[i] = to[triangles[i]];
-
   const edges = new Map();
 
-  for (let t = 0; t < faces.length; t += 3) {
-    const a = faces[t];
-    const b = faces[t + 1];
-    const c = faces[t + 2];
+  for (let t = 0; t < triangles.length; t += 3) {
+    const a = to[triangles[t]];
+    const b = to[triangles[t + 1]];
+    const c = to[triangles[t + 2]];
 
     const ux = points[b * 3] - points[a * 3];
     const uy = points[b * 3 + 1] - points[a * 3 + 1];
@@ -159,13 +184,6 @@ function engrave(positions, triangles) {
     }
   }
 
-  const lines = [];
-  for (const { p, q, first, second } of edges.values()) {
-    const sharp = !second
-      || first[0] * second[0] + first[1] * second[1] + first[2] * second[2] < CREASE;
-    if (sharp) lines.push(p, q);
-  }
-
   let minX = Infinity; let minY = Infinity; let minZ = Infinity;
   let maxX = -Infinity; let maxY = -Infinity; let maxZ = -Infinity;
   for (let i = 0; i < points.length; i += 3) {
@@ -174,13 +192,137 @@ function engrave(positions, triangles) {
     minZ = Math.min(minZ, points[i + 2]); maxZ = Math.max(maxZ, points[i + 2]);
   }
 
-  return {
-    points,
-    faces,
-    lines: new Uint32Array(lines),
-    centre: [(minX + maxX) / 2, (minY + maxY) / 2, (minZ + maxZ) / 2],
-    radius: Math.hypot(maxX - minX, maxY - minY, maxZ - minZ) / 2 || 1,
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+  const cz = (minZ + maxZ) / 2;
+  const radius = Math.hypot(maxX - minX, maxY - minY, maxZ - minZ) / 2 || 1;
+
+  /* Centre and normalise here, so the draw code never has to think about it. */
+  const place = (i, out) => {
+    out.push((points[i * 3] - cx) / radius, (points[i * 3 + 1] - cy) / radius,
+      (points[i * 3 + 2] - cz) / radius);
   };
+
+  const fill = [];
+  for (let t = 0; t < triangles.length; t++) place(to[triangles[t]], fill);
+
+  const lines = [];
+  for (const { p, q, first, second } of edges.values()) {
+    const sharp = !second
+      || first[0] * second[0] + first[1] * second[1] + first[2] * second[2] < CREASE;
+    if (sharp) { place(p, lines); place(q, lines); }
+  }
+
+  return { fill: new Float32Array(fill), lines: new Float32Array(lines) };
+}
+
+/* ---- Act II: the globe -------------------------------------------------- */
+
+const onSphere = (lat, lon, r = 1) => {
+  const a = lat * RAD;
+  const b = lon * RAD;
+  const k = Math.cos(a) * r;
+  return [k * Math.sin(b), Math.sin(a) * r, k * Math.cos(b)];
+};
+
+/**
+ * Reads the coastline: polylines of delta-encoded hundredths of a degree,
+ * which keeps almost every number in the file one or two characters long.
+ */
+async function loadCoastline(url) {
+  const { scale, lines } = await (await fetch(url)).json();
+
+  return lines.map((deltas) => {
+    const line = new Float64Array(deltas.length);
+    let lon = 0;
+    let lat = 0;
+    for (let i = 0; i < deltas.length; i += 2) {
+      lon += deltas[i];
+      lat += deltas[i + 1];
+      line[i] = lon / scale;
+      line[i + 1] = lat / scale;
+    }
+    return line;
+  });
+}
+
+/** Every polyline becomes a run of line segments on the sphere. */
+function drapeCoastline(strokes, r) {
+  const out = [];
+  for (const line of strokes) {
+    for (let p = 0; p < line.length / 2 - 1; p++) {
+      out.push(...onSphere(line[p * 2 + 1], line[p * 2], r));
+      out.push(...onSphere(line[p * 2 + 3], line[p * 2 + 2], r));
+    }
+  }
+  return new Float32Array(out);
+}
+
+/** Meridians and parallels every fifteen degrees, as an engraver would rule them. */
+function graticule(r) {
+  const out = [];
+  const step = 3;
+
+  for (let lon = -180; lon < 180; lon += 15) {
+    for (let lat = -90; lat < 90; lat += step) {
+      out.push(...onSphere(lat, lon, r), ...onSphere(lat + step, lon, r));
+    }
+  }
+  for (let lat = -75; lat <= 75; lat += 15) {
+    for (let lon = -180; lon < 180; lon += step) {
+      out.push(...onSphere(lat, lon, r), ...onSphere(lat, lon + step, r));
+    }
+  }
+  return new Float32Array(out);
+}
+
+/** The equator, the prime meridian, and a meridian ring standing off the sphere. */
+function rings(r) {
+  const out = [];
+  const step = 2;
+
+  for (let lon = -180; lon < 180; lon += step) {
+    out.push(...onSphere(0, lon, r), ...onSphere(0, lon + step, r));
+  }
+  for (let lat = -90; lat < 90; lat += step) {
+    out.push(...onSphere(lat, 0, r), ...onSphere(lat + step, 0, r));
+  }
+
+  /* The brass meridian an antique globe is hung in, tilted off the axis. */
+  const tilt = 23.4 * RAD;
+  const cos = Math.cos(tilt);
+  const sin = Math.sin(tilt);
+  const hoop = (t) => {
+    const x = Math.sin(t) * 1.26;
+    const y = Math.cos(t) * 1.26;
+    return [x * cos - y * sin, x * sin + y * cos, 0];
+  };
+  for (let a = 0; a < 360; a += step) {
+    out.push(...hoop(a * RAD), ...hoop((a + step) * RAD));
+  }
+  return new Float32Array(out);
+}
+
+/** A closed sphere, drawn only into depth so the far side stays hidden. */
+function shell(r) {
+  const out = [];
+  const bands = 36;
+  const rows = 24;
+
+  for (let i = 0; i < rows; i++) {
+    const lat0 = -90 + (180 * i) / rows;
+    const lat1 = -90 + (180 * (i + 1)) / rows;
+    for (let j = 0; j < bands; j++) {
+      const lon0 = -180 + (360 * j) / bands;
+      const lon1 = -180 + (360 * (j + 1)) / bands;
+      const a = onSphere(lat0, lon0, r);
+      const b = onSphere(lat1, lon0, r);
+      const c = onSphere(lat1, lon1, r);
+      const d = onSphere(lat0, lon1, r);
+      out.push(...a, ...b, ...c, ...a, ...c, ...d);
+    }
+  }
+  return new Float32Array(out);
 }
 
 /* ---- The plate ---------------------------------------------------------- */
@@ -215,38 +357,34 @@ export function initEngraving() {
   if (!gl) return;
 
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pinBoard = document.getElementById('engraving-pins');
+  const dividers = document.getElementById('dividers');
 
-  loadModel(MODEL).then((raw) => {
-    const plate = engrave(raw.positions, raw.triangles);
+  Promise.all([loadBust(BUST), loadCoastline(COASTLINE)]).then(([raw, strokes]) => {
+    const bust = cutBust(raw.positions, raw.triangles);
     const program = compile(gl);
     const uMvp = gl.getUniformLocation(program, 'uMvp');
     const uColor = gl.getUniformLocation(program, 'uColor');
 
-    const points = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, points);
-    gl.bufferData(gl.ARRAY_BUFFER, plate.points, gl.STATIC_DRAW);
+    /* Every batch is a plain run of vertices; nothing here needs an index. */
+    const batch = (data, mode) => {
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+      return { buffer, mode, count: data.length / 3 };
+    };
 
-    /* WebGL 1 needs an extension before it will read 32-bit indices. */
-    const wide = typeof WebGL2RenderingContext !== 'undefined'
-      && gl instanceof WebGL2RenderingContext
-      || gl.getExtension('OES_element_index_uint');
-    const narrow = (source) => (wide ? source : Uint16Array.from(source));
-    const faces = narrow(plate.faces);
-    const lines = narrow(plate.lines);
-    const indexType = faces.BYTES_PER_ELEMENT === 4 ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT;
-
-    const faceBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, faceBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, faces, gl.STATIC_DRAW);
-
-    const lineBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, lineBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, lines, gl.STATIC_DRAW);
+    const parts = {
+      bustFill: batch(bust.fill, gl.TRIANGLES),
+      bustLines: batch(bust.lines, gl.LINES),
+      globeFill: batch(shell(0.994), gl.TRIANGLES),
+      coast: batch(drapeCoastline(strokes, 1.004), gl.LINES),
+      grid: batch(graticule(1.001), gl.LINES),
+      rings: batch(rings(1.002), gl.LINES),
+    };
 
     gl.useProgram(program);
     gl.enableVertexAttribArray(0);
-    gl.bindBuffer(gl.ARRAY_BUFFER, points);
-    gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.POLYGON_OFFSET_FILL);
     gl.polygonOffset(1, 1);
@@ -254,8 +392,26 @@ export function initEngraving() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.clearColor(0, 0, 0, 0);
 
+    const draw = (part, mvp, alpha, ink) => {
+      if (alpha <= 0.002) return;
+      gl.bindBuffer(gl.ARRAY_BUFFER, part.buffer);
+      gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+      gl.uniformMatrix4fv(uMvp, false, mvp);
+
+      if (part.mode === gl.TRIANGLES) {
+        /* Depth only: it hides what is behind the surface without inking it. */
+        gl.colorMask(false, false, false, false);
+        gl.depthFunc(gl.LESS);
+      } else {
+        gl.colorMask(true, true, true, true);
+        gl.depthFunc(gl.LEQUAL);
+        gl.uniform4f(uColor, ink[0], ink[1], ink[2], ink[3] * alpha);
+      }
+      gl.drawArrays(part.mode, 0, part.count);
+    };
+
     /* The ink is a stylesheet decision, so both editions can set their own. */
-    const ink = new Float32Array([0, 0, 0, 0.9]);
+    const ink = new Float32Array([0, 0, 0, 0.75]);
     const readInk = () => {
       const value = getComputedStyle(document.documentElement)
         .getPropertyValue('--engraving-ink').trim();
@@ -270,8 +426,7 @@ export function initEngraving() {
 
     let width = 1;
     let height = 1;
-    let offsetX = 0;
-    let distance = 3.2;
+    let roomy = true;
 
     const resize = () => {
       const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -280,68 +435,111 @@ export function initEngraving() {
       canvas.width = width;
       canvas.height = height;
       gl.viewport(0, 0, width, height);
-
-      /* A narrow column gets a smaller plate, set behind the measure rather
-         than beside it, so it never competes with the text. */
-      const roomy = innerWidth >= 1024;
-      offsetX = roomy ? 1.15 : 0;
-      distance = roomy ? 4.3 : 6.2;
+      roomy = innerWidth >= 1024;
     };
 
-    const pointer = { x: 0, y: 0 };
-    const eased = { turn: 0, x: 0, y: 0 };
+    const pointer = { x: 0, y: 0, sx: -400, sy: -400 };
+    const eased = { turn: 0, x: 0, y: 0, cx: -400, cy: -400 };
+    const pins = PLACES.map((place) => ({
+      ...place,
+      node: pinBoard?.querySelector(`[data-pin="${place.id}"]`) ?? null,
+      point: onSphere(place.lat, place.lon, 1.01),
+    }));
 
-    const pose = () => {
+    const progress = () => {
       const travel = Math.max(document.documentElement.scrollHeight - innerHeight, 1);
-      const through = Math.min(Math.max(scrollY / travel, 0), 1);
-      return {
-        turn: -0.35 + through * Math.PI * 2.1,
-        x: pointer.x * 0.34,
-        y: pointer.y * 0.22,
-      };
+      return clamp01(scrollY / travel);
     };
 
-    const draw = () => {
+    const pose = () => ({
+      turn: progress(),
+      x: pointer.x,
+      y: pointer.y,
+      cx: pointer.sx,
+      cy: pointer.sy,
+    });
+
+    const render = () => {
+      const p = eased.turn;
+      const projection = perspective(0.6, width / height, 0.1, 60);
+
+      /* The two acts cross over once, and only once. */
+      const bustAlpha = 1 - ease(clamp01((p - ACT.close * 0.5) / (ACT.open - ACT.close * 0.5)));
+      const globeAlpha = ease(clamp01((p - ACT.close) / (ACT.open - ACT.close)));
+
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      const placed = mul(translate(offsetX, 0, -distance), rotY(eased.turn + eased.x));
-      const turned = mul(placed, rotX(eased.y));
-      const centred = mul(
-        scale(1 / plate.radius),
-        translate(-plate.centre[0], -plate.centre[1], -plate.centre[2]),
-      );
-      const mvp = mul(perspective(0.6, width / height, 0.1, 40), mul(turned, centred));
+      if (bustAlpha > 0.002) {
+        const yaw = -0.5 + (p / ACT.open) * 1.5 + eased.x * 0.34;
+        const model = mul(
+          mul(translate(roomy ? 1.32 : 0, 0, roomy ? -4.4 : -6.2), rotY(yaw)),
+          rotX(eased.y * 0.22),
+        );
+        const mvp = mul(projection, model);
+        draw(parts.bustFill, mvp, bustAlpha, ink);
+        draw(parts.bustLines, mvp, bustAlpha, ink);
+      }
 
-      gl.uniformMatrix4fv(uMvp, false, mvp);
+      let globeMvp = null;
+      let spun = null;
 
-      /* The solid goes into the depth buffer only: it hides the lines behind
-         the surface without laying down any ink of its own. */
-      gl.colorMask(false, false, false, false);
-      gl.depthFunc(gl.LESS);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, faceBuffer);
-      gl.drawElements(gl.TRIANGLES, faces.length, indexType, 0);
+      if (globeAlpha > 0.002) {
+        /* Turned so Sumatra faces the reader as the education section lands,
+           then kept slowly drifting for the rest of the page. */
+        const yaw = -102.2 * RAD + (p - 0.55) * 1.5 + eased.x * 0.30;
+        const pitch = 0.30 + eased.y * 0.16;
+        spun = mul(rotX(pitch), rotY(yaw));
+        const model = mul(
+          translate(roomy ? 1.45 : 0.15, 0, roomy ? -4.0 : -6.4),
+          mul(spun, scale(1)),
+        );
+        globeMvp = mul(projection, model);
 
-      gl.colorMask(true, true, true, true);
-      gl.depthFunc(gl.LEQUAL);
-      gl.uniform4fv(uColor, ink);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, lineBuffer);
-      gl.drawElements(gl.LINES, lines.length, indexType, 0);
+        draw(parts.globeFill, globeMvp, globeAlpha, ink);
+        draw(parts.grid, globeMvp, globeAlpha * 0.42, ink);
+        draw(parts.coast, globeMvp, globeAlpha, ink);
+        draw(parts.rings, globeMvp, globeAlpha * 0.8, ink);
+      }
+
+      /* The labels are ordinary HTML, moved to wherever their point landed. */
+      for (const pin of pins) {
+        if (!pin.node) continue;
+        if (!globeMvp || globeAlpha <= 0.02) { pin.node.style.opacity = '0'; continue; }
+
+        const [x, y, z] = pin.point;
+        const facing = spun[2] * x + spun[6] * y + spun[10] * z;
+        const clip = apply(globeMvp, x, y, z);
+        if (clip[3] <= 0 || facing <= 0.12) { pin.node.style.opacity = '0'; continue; }
+
+        const sx = ((clip[0] / clip[3]) * 0.5 + 0.5) * innerWidth;
+        const sy = (0.5 - (clip[1] / clip[3]) * 0.5) * innerHeight;
+        pin.node.style.transform = `translate3d(${sx.toFixed(1)}px, ${sy.toFixed(1)}px, 0)`;
+        pin.node.style.opacity = (globeAlpha * clamp01((facing - 0.12) / 0.25)).toFixed(3);
+      }
+
+      if (dividers) {
+        dividers.style.transform =
+          `translate3d(${eased.cx.toFixed(1)}px, ${eased.cy.toFixed(1)}px, 0)`;
+      }
     };
 
     let running = false;
 
     const settle = () => {
       const want = pose();
-      eased.turn += (want.turn - eased.turn) * 0.09;
+      eased.turn += (want.turn - eased.turn) * 0.12;
       eased.x += (want.x - eased.x) * 0.06;
       eased.y += (want.y - eased.y) * 0.06;
-      draw();
+      eased.cx += (want.cx - eased.cx) * 0.22;
+      eased.cy += (want.cy - eased.cy) * 0.22;
+      render();
 
-      const rest = Math.abs(want.turn - eased.turn)
+      const rest = Math.abs(want.turn - eased.turn) * 40
         + Math.abs(want.x - eased.x)
-        + Math.abs(want.y - eased.y);
+        + Math.abs(want.y - eased.y)
+        + (Math.abs(want.cx - eased.cx) + Math.abs(want.cy - eased.cy)) * 0.01;
 
-      if (rest > 0.0004) requestAnimationFrame(settle);
+      if (rest > 0.002) requestAnimationFrame(settle);
       else running = false;
     };
 
@@ -351,39 +549,36 @@ export function initEngraving() {
       requestAnimationFrame(settle);
     };
 
-    const settleNow = () => {
-      const want = pose();
-      eased.turn = want.turn;
-      eased.x = want.x;
-      eased.y = want.y;
-    };
+    const jump = () => Object.assign(eased, pose());
 
     readInk();
     resize();
-    settleNow();
-    draw();
+    jump();
+    render();
     canvas.dataset.ready = 'true';
+    pinBoard?.setAttribute('data-ready', 'true');
 
     if (!still) {
       addEventListener('scroll', nudge, { passive: true });
       addEventListener('pointermove', (event) => {
         pointer.x = (event.clientX / innerWidth) * 2 - 1;
         pointer.y = (event.clientY / innerHeight) * 2 - 1;
+        pointer.sx = event.clientX;
+        pointer.sy = event.clientY;
+        if (dividers && dividers.dataset.ready !== 'true') {
+          eased.cx = pointer.sx;
+          eased.cy = pointer.sy;
+          dividers.dataset.ready = 'true';
+        }
         nudge();
       }, { passive: true });
     }
 
-    addEventListener('resize', () => {
-      resize();
-      settleNow();
-      draw();
-    }, { passive: true });
+    addEventListener('resize', () => { resize(); jump(); render(); }, { passive: true });
 
-    new MutationObserver(() => {
-      readInk();
-      draw();
-    }).observe(document.documentElement, { attributeFilter: ['data-theme'] });
+    new MutationObserver(() => { readInk(); render(); })
+      .observe(document.documentElement, { attributeFilter: ['data-theme'] });
   }).catch((error) => {
-    console.error('[portfolio] the engraving could not be cut:', error);
+    console.error('[portfolio] the plate could not be cut:', error);
   });
 }

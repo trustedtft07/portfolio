@@ -78,7 +78,7 @@
   --gold:        #8a6a2c;
 
   /* Ink for the engraving canvas, as "r g b a" for WebGL. */
-  --engraving-ink: 124 47 38 0.45;
+  --engraving-ink: 124 47 38 0.7;
 
   --shadow-card: 0 1px 0 rgba(34, 29, 23, 0.05);
   --shadow-lift: 0 10px 34px -22px rgba(34, 29, 23, 0.55);
@@ -107,7 +107,7 @@
   --accent-soft: #b9705f;
   --gold:        #c9a55c;
 
-  --engraving-ink: 208 138 125 0.5;
+  --engraving-ink: 208 138 125 0.72;
 
   --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.4);
   --shadow-lift: 0 12px 38px -24px rgba(0, 0, 0, 0.9);
