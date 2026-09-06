@@ -1,6 +1,7 @@
 # ahmadandhikaharirie.my.id
 
-Personal portfolio of **Ahmad Andhika Haririe** — full-stack, mobile and game developer.
+Personal record of **Ahmad Andhika Haririe** — Informatics Engineering student at
+Universitas Sriwijaya, Palembang.
 
 Hand-written HTML, CSS and JavaScript. No framework, no bundler, no build step:
 what is in `public/` is exactly what is served. It runs as a static-assets
@@ -14,8 +15,8 @@ Cloudflare Worker on the apex domain.
 
 An *old classic* editorial treatment — a printed broadsheet rather than a
 dashboard. Double rules, roman numerals for the section numbers, small-caps
-labels, drop caps, engraved plates for the project thumbnails, and a fleuron
-(`❦`) as the section ornament.
+labels, drop caps, wax seals for the certificates, and a fleuron (`❦`) as the
+section ornament.
 
 | Role | Face |
 |---|---|
@@ -37,7 +38,7 @@ never flashes the wrong one.
 
 ```
 public/
-├── index.html              the whole page — nine numbered sections
+├── index.html              the whole page — seven numbered sections
 ├── 404.html
 ├── robots.txt · sitemap.xml · site.webmanifest
 └── assets/
@@ -73,19 +74,22 @@ broken feature never takes the page down.
 | `dateline.js` | masthead date, issue number, copyright year |
 | `typewriter.js` | the strapline that types itself |
 | `counters.js` | statistics that count up in view |
-| `pips.js` | five-lozenge skill meters |
-| `projects.js` | filtering, searching, the detail dialog |
 | `command-palette.js` | <kbd>Ctrl</kbd>+<kbd>K</kbd> search |
 | `contact.js` | form validation, mail composition, copy buttons |
 
 ---
 
+## Contents
+
+Seven sections: about, craft, education, at the university, game jams,
+letters, correspondence. Everything factual on the page — the two schools and
+their dates, the two roles at Himpunan Mahasiswa Informatika, the three game
+jam certificates — comes from the LinkedIn profile at
+<https://www.linkedin.com/in/ahmad-andhika-haririe/>. Individual software
+projects and their repositories are deliberately not listed here.
+
 ## Features
 
-- Nine sections: about, craft, toolbox, selected work, journey, landmarks,
-  notes, letters, correspondence.
-- Filterable and searchable work gallery, seven projects, each with a detail
-  dialog built from the card's own `<template>` — one source of truth per fact.
 - <kbd>Ctrl</kbd>+<kbd>K</kbd> command palette that indexes the page itself.
 - Day / night editions, reading progress, scroll reveal, animated counters,
   scrollspy navigation and a mobile drawer.
@@ -93,7 +97,7 @@ broken feature never takes the page down.
   Nothing is posted anywhere and nothing is stored.
 - Print stylesheet that reformats the page as an A4 résumé.
 - SEO: Open Graph and Twitter cards, JSON-LD (`Person`, `WebSite`,
-  `ProfilePage`, `ItemList`), canonical URL, sitemap and robots.
+  `ProfilePage`), canonical URL, sitemap and robots.
 - Accessibility: skip link, landmarks, visible focus, keyboard-operable
   dialogs, live regions, and full `prefers-reduced-motion` support.
 
@@ -109,17 +113,18 @@ npm run deploy    # publish to Cloudflare
 
 There is no build step. Edit a file in `public/` and reload.
 
-### Adding a project
+### Adding a section
 
-Copy any `<li class="project">` in `#work-grid` and change:
+Copy a `<section class="section">` block in `index.html`, give it an `id`, and
+add that `id` to the three navigation lists: `#section-nav` in the top bar,
+`.drawer__list`, and the two `.colophon__nav` lists. The command palette and
+the masthead issue number both count `.section[id]` themselves, so neither
+needs touching.
 
-- `data-id` — must be unique; it is what `data-open-project` points at
-- `data-category` — `web`, `mobile`, `edge` or `game`
-- `data-keywords` — free text the search matches against
-- the `<template class="project__detail">` — the body of the dialog
+### Adding a certificate
 
-Then update the counts on the filter buttons. The masthead issue number counts
-the plates by itself.
+Copy an `<li class="landmark">` in `#gamejams`. The `.seal__inner` holds the
+roman numeral.
 
 ### Adding a recommendation
 
@@ -142,4 +147,4 @@ for mail are untouched.
 
 ## Licence
 
-MIT for the code. The written content and the projects described are mine.
+MIT for the code. The written content is mine.

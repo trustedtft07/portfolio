@@ -1,13 +1,13 @@
 /**
  * The Ctrl+K palette.
  *
- * Entries are read out of the document itself — the numbered sections and the
- * project plates — so the palette can never list something that is not there.
+ * Entries are read out of the document itself — the numbered sections — so the
+ * palette can never list something that is not there.
  */
 
 const KEY = 'k';
 
-/** Sections and projects, in the order they appear in the document. */
+/** The numbered sections, in the order they appear in the document. */
 function collectEntries() {
   const sections = [...document.querySelectorAll('.section[id]')].map((section) => ({
     kind: 'Section',
@@ -16,17 +16,8 @@ function collectEntries() {
     run: () => document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' }),
   }));
 
-  const projects = [...document.querySelectorAll('.project[data-id]')].map((card) => ({
-    kind: 'Work',
-    label: card.querySelector('.project__title')?.textContent?.trim() ?? card.dataset.id,
-    hint: card.querySelector('.tag--cat')?.textContent?.trim() ?? '',
-    keywords: card.dataset.keywords ?? '',
-    run: () => card.querySelector('[data-open-project]')?.click(),
-  }));
-
   return [
     ...sections,
-    ...projects,
     {
       kind: 'Action',
       label: 'Print the résumé',
@@ -38,6 +29,12 @@ function collectEntries() {
       label: 'Switch edition',
       hint: 'Day / night',
       run: () => document.getElementById('theme-toggle')?.click(),
+    },
+    {
+      kind: 'Link',
+      label: 'LinkedIn profile',
+      hint: 'ahmad-andhika-haririe',
+      run: () => open('https://www.linkedin.com/in/ahmad-andhika-haririe/', '_blank', 'noopener'),
     },
     {
       kind: 'Link',

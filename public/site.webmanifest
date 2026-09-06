@@ -1,7 +1,7 @@
 {
-  "name": "Ahmad Andhika Haririe — Portfolio",
+  "name": "Ahmad Andhika Haririe — Personal record",
   "short_name": "A. A. Haririe",
-  "description": "Full-stack, mobile and game developer. Web with React and Laravel, mobile in Flutter, edge services on Cloudflare Workers, games in Godot.",
+  "description": "Informatics Engineering student at Universitas Sriwijaya, Palembang. Web with React and Laravel, mobile in Flutter, edge services on Cloudflare Workers, games in Godot.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -1,8 +1,8 @@
 /**
  * The masthead dateline and the copyright year.
  *
- * The issue number is the count of plates actually printed on the page, so it
- * cannot drift out of step with the work section.
+ * The issue number is the count of numbered sections actually printed on the
+ * page, so it cannot drift out of step with the contents.
  */
 
 const ROMAN = [
@@ -40,7 +40,7 @@ export function initDateline() {
   }
 
   const issue = document.getElementById('dateline-issue');
-  if (issue) issue.textContent = toRoman(document.querySelectorAll('.project').length);
+  if (issue) issue.textContent = toRoman(document.querySelectorAll('.section[id]').length);
 
   const year = document.getElementById('year');
   if (year) year.textContent = String(today.getFullYear());

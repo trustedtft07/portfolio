@@ -128,7 +128,7 @@
   letter-spacing: var(--tracking-wide);
 }
 
-/* ---- Tags and pips ------------------------------------------------------ */
+/* ---- Tags --------------------------------------------------------------- */
 
 .tag {
   display: inline-block;
@@ -148,29 +148,6 @@
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
-}
-
-.pips {
-  display: inline-flex;
-  gap: 4px;
-  flex: none;
-}
-
-.pips::before {
-  content: "";
-  display: none;
-}
-
-.pips span {
-  width: 9px;
-  height: 9px;
-  border: 1px solid var(--rule-strong);
-  transform: rotate(45deg);
-}
-
-.pips span.is-on {
-  background: var(--accent);
-  border-color: var(--accent);
 }
 
 /* ---- Panels ------------------------------------------------------------- */
@@ -352,9 +329,8 @@
 .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
 .copy-btn[data-copied="true"] { color: var(--gold); border-color: var(--gold); }
 
-/* ---- Dialogs: shared ---------------------------------------------------- */
+/* ---- Command palette ---------------------------------------------------- */
 
-.modal,
 .palette {
   padding: 0;
   border: 0;
@@ -362,119 +338,13 @@
   color: var(--ink);
   max-width: none;
   max-height: none;
+  width: min(38rem, calc(100vw - 2rem));
+  margin: clamp(3rem, 12vh, 8rem) auto auto;
 }
 
-.modal::backdrop,
 .palette::backdrop {
   background: color-mix(in srgb, #14100b 68%, transparent);
   backdrop-filter: blur(3px);
-}
-
-/* ---- Project modal ------------------------------------------------------ */
-
-.modal {
-  width: min(52rem, calc(100vw - 2rem));
-  margin: auto;
-}
-
-.modal__sheet {
-  max-height: min(84vh, 52rem);
-  overflow-y: auto;
-  padding: var(--space-l);
-  background: var(--paper-raised);
-  border: 1px solid var(--rule-strong);
-  box-shadow: var(--shadow-dialog);
-}
-
-.modal[open] .modal__sheet { animation: rise var(--dur) var(--ease); }
-
-.modal__head {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-m);
-}
-
-.modal__eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.modal__title {
-  margin-top: var(--space-3xs);
-  font-size: var(--step-2);
-}
-
-.modal__close { margin-left: auto; flex: none; }
-
-.modal__body { padding-block: var(--space-s); }
-
-.modal__body > * + * { margin-top: var(--space-s); }
-
-.modal__body h4 {
-  margin-top: var(--space-m);
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--ink-mute);
-}
-
-.detail__lede {
-  font-size: var(--step-1);
-  font-style: italic;
-  line-height: var(--leading-snug);
-  color: var(--ink-soft);
-}
-
-.detail__list { padding-left: 0; }
-
-.detail__list li {
-  position: relative;
-  padding-left: 1.5rem;
-  margin-bottom: var(--space-2xs);
-}
-
-.detail__list li::before {
-  content: "\2767";
-  position: absolute;
-  left: 0;
-  top: -0.05em;
-  color: var(--gold);
-  font-size: 0.85em;
-}
-
-.modal__foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-s);
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--space-s);
-  border-top: 1px solid var(--rule);
-}
-
-.modal__stack {
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  letter-spacing: 0.06em;
-  color: var(--ink-mute);
-}
-
-.modal__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2xs);
-}
-
-/* ---- Command palette ---------------------------------------------------- */
-
-.palette {
-  width: min(38rem, calc(100vw - 2rem));
-  margin: clamp(3rem, 12vh, 8rem) auto auto;
 }
 
 .palette__sheet {

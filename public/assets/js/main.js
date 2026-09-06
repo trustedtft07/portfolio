@@ -12,8 +12,6 @@ import { initScrollEffects } from './modules/scroll-effects.js';
 import { initDateline } from './modules/dateline.js';
 import { initTypewriter } from './modules/typewriter.js';
 import { initCounters } from './modules/counters.js';
-import { initPips } from './modules/pips.js';
-import { initProjects } from './modules/projects.js';
 import { initCommandPalette } from './modules/command-palette.js';
 import { initContact } from './modules/contact.js';
 
@@ -26,8 +24,6 @@ const modules = [
   initDateline,
   initTypewriter,
   initCounters,
-  initPips,
-  initProjects,
   initCommandPalette,
   initContact,
 ];

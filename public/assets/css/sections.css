@@ -413,260 +413,84 @@
   color: var(--ink-mute) !important;
 }
 
-/* ---- III. Toolbox ------------------------------------------------------- */
-
-.toolbox {
-  display: grid;
-  gap: var(--space-m);
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-}
-
-.toolbox__heading {
-  padding-bottom: var(--space-2xs);
-  margin-bottom: var(--space-s);
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.skills { display: grid; gap: var(--space-2xs); }
-
-.skill {
-  display: flex;
-  align-items: center;
-  gap: var(--space-s);
-  justify-content: space-between;
-}
-
-.skill__name { font-size: var(--step--1); }
-
-.card--quote { display: grid; }
-
 @media (max-width: 52rem) {
   .about { grid-template-columns: 1fr; }
   .stat + .stat { border-left: 0; }
 }
 
-/* ---- IV. Selected work -------------------------------------------------- */
+/* ---- III. Education ----------------------------------------------------- */
 
-.workbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-s);
-  align-items: center;
-  justify-content: space-between;
-  padding-block: var(--space-s);
-  border-block: 1px solid var(--rule);
-  margin-bottom: var(--space-m);
+.education {
+  display: grid;
+  gap: var(--space-m);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 }
 
-.filters {
+.education__period {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3xs);
-}
-
-.filter {
-  display: inline-flex;
   align-items: baseline;
-  gap: 0.4em;
-  padding: 0.35rem 0.8rem;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  background: none;
+  gap: var(--space-2xs);
+  padding-bottom: var(--space-2xs);
+  margin-bottom: var(--space-s);
+  border-bottom: 1px solid var(--rule);
   font-family: var(--font-mono);
   font-size: var(--step--2);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--ink-soft);
-  transition: color var(--dur-fast) var(--ease),
-              border-color var(--dur-fast) var(--ease),
-              background var(--dur-fast) var(--ease);
+  color: var(--accent);
 }
 
-.filter:hover { color: var(--accent); border-color: var(--rule); }
-
-.filter.is-active {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
-}
-
-.filter__count {
-  font-size: 0.82em;
-  opacity: 0.65;
-  font-variant-numeric: lining-nums;
-}
-
-.searchbox {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: 1 1 15rem;
-  max-width: 22rem;
-  border-bottom: 1px solid var(--rule-strong);
-}
-
-.searchbox__icon {
-  width: 1rem;
-  height: 1rem;
-  flex: none;
-  color: var(--ink-mute);
-}
-
-.searchbox__input {
-  width: 100%;
-  padding: 0.45rem 0.5rem;
-  border: 0;
-  background: none;
-  font-size: var(--step--1);
-  outline: none;
-}
-
-.searchbox__input::placeholder { color: var(--ink-mute); font-style: italic; }
-.searchbox__input::-webkit-search-cancel-button { display: none; }
-
-.searchbox__clear {
-  border: 0;
-  background: none;
-  padding-inline: 0.35rem;
-  font-size: 1.15rem;
-  line-height: 1;
-  color: var(--ink-mute);
-}
-
-.searchbox__clear:hover { color: var(--accent); }
-
-.work-status {
-  min-height: 1.4em;
-  margin-bottom: var(--space-s);
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  letter-spacing: 0.06em;
-  color: var(--ink-mute);
-}
-
-.work {
-  display: grid;
-  gap: var(--space-m);
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
-}
-
-.project {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-s);
-}
-
-.project:hover {
-  border-color: var(--rule-strong);
-  box-shadow: var(--shadow-lift);
-  transform: translateY(-2px);
-}
-
-.project[hidden] { display: none; }
-
-.project__plate {
-  margin-bottom: var(--space-s);
-  background: var(--paper-tint);
-  border: 1px solid var(--rule);
-}
-
-.project__plate svg {
-  width: 100%;
-  height: auto;
-  color: var(--ink-soft);
-  stroke-width: 1.1;
-}
-
-.plate__frame { stroke: var(--rule-strong); stroke-width: 1; }
-.plate__frame--inner { stroke: var(--rule); stroke-width: 0.7; }
-
-.project__plate use { color: var(--accent); }
-
-.plate__num {
-  fill: var(--ink-mute);
-  stroke: none;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-anchor: middle;
-}
-
-.project__body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.project__meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  justify-content: space-between;
-  margin-bottom: var(--space-2xs);
-}
-
-.project__year {
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  color: var(--ink-mute);
-}
-
-.project__title { margin-bottom: var(--space-2xs); }
-
-.project__summary {
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-}
-
-.project__stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3xs);
-  margin-block: var(--space-s);
-}
-
-.project__stack li {
-  padding: 0.08rem 0.42rem;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  color: var(--ink-mute);
-}
-
-.project__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3xs);
-  margin-top: auto;
-  padding-top: var(--space-2xs);
-}
-
-.work-empty {
-  padding: var(--space-xl) var(--space-m);
-  text-align: center;
+.education__state {
+  letter-spacing: 0;
+  text-transform: none;
   font-style: italic;
-  color: var(--ink-soft);
+  color: var(--ink-mute);
 }
 
-.work-empty .ornament { display: block; margin-bottom: var(--space-2xs); }
+.education__school {
+  font-size: var(--step-2);
+  line-height: var(--leading-snug);
+}
 
-.work-more {
-  margin-top: var(--space-l);
+.education__degree {
+  margin-bottom: var(--space-s);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--ink-mute);
+}
+
+.education__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3xs);
+  margin-top: var(--space-s);
   padding-top: var(--space-s);
-  border-top: 1px solid var(--rule);
-  text-align: center;
-  font-style: italic;
-  color: var(--ink-mute);
+  border-top: 1px dotted var(--rule);
 }
 
-/* ---- V. Journey --------------------------------------------------------- */
+/* ---- IV. At the university ---------------------------------------------- */
+
+.campus__lede {
+  max-width: 42rem;
+  margin: 0 auto var(--space-xl);
+  padding-bottom: var(--space-m);
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--step-0);
+  font-style: italic;
+  line-height: var(--leading-body);
+  text-align: center;
+  text-wrap: balance;
+  color: var(--ink-soft);
+}
+
+.campus__lede strong {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---- Timeline ----------------------------------------------------------- */
 
 .timeline {
   position: relative;
@@ -737,7 +561,7 @@
   margin-top: var(--space-s);
 }
 
-/* ---- VI. Landmarks ------------------------------------------------------ */
+/* ---- V. Game jams ------------------------------------------------------- */
 
 .landmarks {
   display: grid;
@@ -779,46 +603,7 @@
   margin-inline: auto;
 }
 
-/* ---- VII. Notes --------------------------------------------------------- */
-
-.notes {
-  display: grid;
-  gap: var(--space-m);
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-}
-
-.note:hover {
-  border-color: var(--rule-strong);
-  box-shadow: var(--shadow-lift);
-}
-
-.note__meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  justify-content: space-between;
-  margin-bottom: var(--space-2xs);
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  color: var(--ink-mute);
-}
-
-.note__title { margin-bottom: var(--space-2xs); }
-.note__title a { text-decoration: none; }
-.note__title a:hover { text-decoration: underline; }
-
-.note__excerpt { font-size: var(--step--1); color: var(--ink-soft); }
-
-.note__source {
-  margin-top: var(--space-s);
-  padding-top: var(--space-2xs);
-  border-top: 1px dotted var(--rule);
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  color: var(--ink-mute);
-}
-
-/* ---- VIII. Letters ------------------------------------------------------ */
+/* ---- VI. Letters -------------------------------------------------------- */
 
 .letters {
   display: grid;
@@ -872,7 +657,7 @@
   color: var(--ink-soft);
 }
 
-/* ---- IX. Correspondence ------------------------------------------------- */
+/* ---- VII. Correspondence ------------------------------------------------ */
 
 .contact {
   display: grid;

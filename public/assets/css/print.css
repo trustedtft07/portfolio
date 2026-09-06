@@ -37,15 +37,9 @@ body::before { display: none; }
 .ticker,
 .scroll-cue,
 .to-top,
-.modal,
 .palette,
 .skip-link,
-.workbar,
-.work-status,
-.work-empty,
 .frontpage__actions,
-.project__actions,
-.project__plate,
 .letters,
 .contact__form,
 .form__actions,
@@ -148,31 +142,23 @@ body::before { display: none; }
 .contact { grid-template-columns: 1fr 1fr; gap: 6mm; }
 
 .craft,
-.toolbox,
-.work,
-.notes,
+.education,
 .landmarks { grid-template-columns: 1fr 1fr; gap: 4mm; }
 
 .stats { gap: 3mm; }
 .stat + .stat { border-left: 0; }
 
-.project,
-.note,
 .craft__item,
+.education__item,
 .landmark,
 .timeline__item { break-inside: avoid; }
 
 .timeline { padding-left: 5mm; }
 .timeline::before { background: #999; }
 
-.pips span { border-color: #000; }
-.pips span.is-on { background: #000; }
-
-.card--quote { display: none; }
+.campus__lede { text-align: left; border-bottom: 1pt solid #000; }
 
 /* Print the destination of a link the reader cannot click. */
-.project__body a[href^="http"]::after,
-.note__title a[href^="http"]::after,
 .contact__value a[href^="http"]::after {
   content: " (" attr(href) ")";
   font-family: var(--font-mono);
