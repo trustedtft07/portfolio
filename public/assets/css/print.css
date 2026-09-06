@@ -1,0 +1,192 @@
+/* =============================================================================
+   PRINT — the page reset as a résumé on A4
+   Loaded with media="print", so none of this touches the screen.
+   ========================================================================== */
+
+@page {
+  size: A4;
+  margin: 16mm 14mm;
+}
+
+:root {
+  --paper: #fff;
+  --paper-raised: #fff;
+  --paper-tint: #fff;
+  --paper-deep: #fff;
+  --ink: #000;
+  --ink-soft: #222;
+  --ink-mute: #555;
+  --rule: #bbb;
+  --rule-strong: #666;
+  --accent: #000;
+  --gold: #666;
+}
+
+body {
+  background: #fff !important;
+  color: #000;
+  font-size: 10.5pt;
+  line-height: 1.45;
+}
+
+body::before { display: none; }
+
+/* Screen furniture that means nothing on paper. */
+.topbar,
+.drawer,
+.ticker,
+.scroll-cue,
+.to-top,
+.modal,
+.palette,
+.skip-link,
+.workbar,
+.work-status,
+.work-empty,
+.frontpage__actions,
+.project__actions,
+.project__plate,
+.letters,
+.contact__form,
+.form__actions,
+.copy-btn,
+.colophon__nav,
+.availability,
+.signature svg { display: none !important; }
+
+/* Everything reveals itself; nothing animates. */
+.reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.card,
+.panel {
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+  background: none;
+}
+
+.card::after { display: none; }
+
+.section {
+  padding-block: 0 8mm;
+  border: 0;
+  background: none;
+  break-inside: auto;
+}
+
+.section--tinted { background: none; }
+
+.section__head {
+  max-width: none;
+  margin-bottom: 4mm;
+  text-align: left;
+  break-after: avoid;
+}
+
+.section__title { font-size: 15pt; }
+
+.section__standfirst,
+.section__numeral,
+.ornament { display: none; }
+
+.section__head::after {
+  content: "";
+  display: block;
+  margin-top: 2mm;
+  border-bottom: 1pt solid #000;
+}
+
+/* ---- Header block ------------------------------------------------------- */
+
+.frontpage { padding: 0 0 6mm; }
+
+.frontpage__sheet {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.frontpage__name {
+  justify-content: flex-start;
+  gap: 0 0.35em;
+  font-size: 26pt;
+  text-align: left;
+}
+
+.frontpage__strap,
+.dateline,
+.frontpage__kicker { justify-content: flex-start; text-align: left; }
+
+.frontpage__strap { font-size: 11pt; }
+.caret { display: none; }
+
+.frontpage__body {
+  grid-template-columns: 1fr;
+  gap: 3mm;
+  padding-block: 3mm;
+}
+
+.portrait { display: none; }
+
+.lede { font-size: 10.5pt; max-width: none; }
+.dropcap { float: none; font-size: 1em; font-weight: 600; line-height: inherit; color: #000; }
+
+.social {
+  gap: 4mm;
+  margin-top: 3mm;
+  padding-top: 2mm;
+}
+
+.social svg { display: none; }
+
+/* ---- Body blocks -------------------------------------------------------- */
+
+.about,
+.contact { grid-template-columns: 1fr 1fr; gap: 6mm; }
+
+.craft,
+.toolbox,
+.work,
+.notes,
+.landmarks { grid-template-columns: 1fr 1fr; gap: 4mm; }
+
+.stats { gap: 3mm; }
+.stat + .stat { border-left: 0; }
+
+.project,
+.note,
+.craft__item,
+.landmark,
+.timeline__item { break-inside: avoid; }
+
+.timeline { padding-left: 5mm; }
+.timeline::before { background: #999; }
+
+.pips span { border-color: #000; }
+.pips span.is-on { background: #000; }
+
+.card--quote { display: none; }
+
+/* Print the destination of a link the reader cannot click. */
+.project__body a[href^="http"]::after,
+.note__title a[href^="http"]::after,
+.contact__value a[href^="http"]::after {
+  content: " (" attr(href) ")";
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  color: #555;
+  word-break: break-all;
+}
+
+.colophon {
+  padding-block: 4mm 0;
+  background: none;
+  border-top: 1pt solid #000;
+}
+
+.colophon__grid { grid-template-columns: 1fr; padding-block: 2mm; }
+.colophon__note { display: none; }
+.colophon__legal { justify-content: flex-start; }

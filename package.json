@@ -1,0 +1,19 @@
+{
+  "name": "ahmadandhikaharirie",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal portfolio of Ahmad Andhika Haririe — hand-written HTML, CSS and JavaScript, served from Cloudflare Workers.",
+  "homepage": "https://ahmadandhikaharirie.my.id",
+  "author": "Ahmad Andhika Haririe",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "serve": "npx --yes serve public",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

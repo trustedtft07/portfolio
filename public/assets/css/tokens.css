@@ -1,0 +1,112 @@
+/* =============================================================================
+   TOKENS
+   One place for colour, type, space and motion. Two editions share the same
+   token names: the day edition is printed on paper, the night edition on ink.
+   ========================================================================== */
+
+:root {
+  /* ---- Type families ---------------------------------------------------- */
+  --font-body: "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-display: "Playfair Display", "EB Garamond", Georgia, serif;
+  --font-mono: "Courier Prime", "Courier New", ui-monospace, monospace;
+
+  /* ---- Fluid type scale ------------------------------------------------- */
+  --step--2: clamp(0.72rem, 0.70rem + 0.10vw, 0.78rem);
+  --step--1: clamp(0.84rem, 0.81rem + 0.14vw, 0.94rem);
+  --step-0:  clamp(1.05rem, 1.00rem + 0.24vw, 1.20rem);
+  --step-1:  clamp(1.25rem, 1.16rem + 0.42vw, 1.55rem);
+  --step-2:  clamp(1.50rem, 1.33rem + 0.80vw, 2.05rem);
+  --step-3:  clamp(1.85rem, 1.55rem + 1.40vw, 2.90rem);
+  --step-4:  clamp(2.25rem, 1.70rem + 2.60vw, 4.20rem);
+  --step-5:  clamp(2.80rem, 1.60rem + 5.60vw, 7.00rem);
+
+  --leading-tight: 1.12;
+  --leading-snug: 1.32;
+  --leading-body: 1.68;
+
+  --tracking-wide: 0.14em;
+  --tracking-wider: 0.24em;
+
+  /* ---- Space ------------------------------------------------------------ */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-s:   1rem;
+  --space-m:   1.5rem;
+  --space-l:   2.25rem;
+  --space-xl:  3.5rem;
+  --space-2xl: 5rem;
+  --space-3xl: 7.5rem;
+
+  /* ---- Measure and shell ------------------------------------------------ */
+  --shell-max: 76rem;
+  --shell-pad: clamp(1.15rem, 4vw, 3rem);
+  --measure: 68ch;
+
+  /* ---- Motion ----------------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur: 260ms;
+  --dur-slow: 620ms;
+
+  /* ---- Depth ------------------------------------------------------------ */
+  --radius: 2px;
+  --z-topbar: 60;
+  --z-drawer: 80;
+  --z-dialog: 100;
+}
+
+/* ---- Day edition: ink on aged paper ------------------------------------- */
+:root,
+[data-theme="day"] {
+  color-scheme: light;
+
+  --paper:        #f3eee2;
+  --paper-raised: #faf6ec;
+  --paper-tint:   #ebe4d4;
+  --paper-deep:   #e2d9c5;
+
+  --ink:      #221d17;
+  --ink-soft: #4a4137;
+  --ink-mute: #766957;
+
+  --rule:        #cabfa9;
+  --rule-strong: #8d7f66;
+
+  --accent:      #7c2f26;
+  --accent-soft: #a8574a;
+  --gold:        #8a6a2c;
+
+  --shadow-card: 0 1px 0 rgba(34, 29, 23, 0.05);
+  --shadow-lift: 0 10px 34px -22px rgba(34, 29, 23, 0.55);
+  --shadow-dialog: 0 30px 90px -40px rgba(34, 29, 23, 0.7);
+
+  --grain-opacity: 0.5;
+}
+
+/* ---- Night edition: warm paper on dark ink ------------------------------ */
+[data-theme="night"] {
+  color-scheme: dark;
+
+  --paper:        #16130e;
+  --paper-raised: #1e1a13;
+  --paper-tint:   #1b1710;
+  --paper-deep:   #241f16;
+
+  --ink:      #ece2cf;
+  --ink-soft: #c8bca4;
+  --ink-mute: #948872;
+
+  --rule:        #3a3226;
+  --rule-strong: #6d5e45;
+
+  --accent:      #d08a7d;
+  --accent-soft: #b9705f;
+  --gold:        #c9a55c;
+
+  --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.4);
+  --shadow-lift: 0 12px 38px -24px rgba(0, 0, 0, 0.9);
+  --shadow-dialog: 0 30px 90px -30px rgba(0, 0, 0, 0.95);
+
+  --grain-opacity: 0.28;
+}

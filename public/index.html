@@ -1,0 +1,1480 @@
+<!doctype html>
+<html lang="en" class="no-js" data-theme="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Ahmad Andhika Haririe — Full-stack, Mobile &amp; Game Developer</title>
+<meta name="description" content="Portfolio of Ahmad Andhika Haririe — a developer building full-stack web apps with React and Laravel, mobile apps in Flutter, edge services on Cloudflare Workers, and games in Godot.">
+<meta name="author" content="Ahmad Andhika Haririe">
+<meta name="theme-color" content="#f2ece0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17140f" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://ahmadandhikaharirie.my.id/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ahmadandhikaharirie.my.id/">
+<meta property="og:title" content="Ahmad Andhika Haririe — Full-stack, Mobile &amp; Game Developer">
+<meta property="og:description" content="Full-stack web with React and Laravel, mobile in Flutter, edge services on Cloudflare Workers, and games in Godot.">
+<meta property="og:image" content="https://ahmadandhikaharirie.my.id/assets/img/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Ahmad Andhika Haririe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ahmad Andhika Haririe — Full-stack, Mobile &amp; Game Developer">
+<meta name="twitter:description" content="Full-stack web with React and Laravel, mobile in Flutter, edge services on Cloudflare Workers, and games in Godot.">
+<meta name="twitter:image" content="https://ahmadandhikaharirie.my.id/assets/img/og-cover.png">
+
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preload" href="/assets/fonts/eb-garamond-normal-400-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/playfair-display-normal-400-900-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/layout.css">
+<link rel="stylesheet" href="/assets/css/sections.css">
+<link rel="stylesheet" href="/assets/css/print.css" media="print">
+
+<script>
+  /* Set the theme before first paint so the page never flashes the wrong edition. */
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) { /* storage blocked */ }
+    var dark = saved ? saved === 'night' : matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = dark ? 'night' : 'day';
+  })();
+</script>
+
+<script type="module" src="/assets/js/main.js"></script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to the main text</a>
+
+<!-- ==========================================================================
+     TOP BAR — a slim running head that appears once the front page scrolls by
+     ======================================================================= -->
+<header class="topbar" id="topbar" data-elevated="false">
+  <div class="topbar__inner shell">
+    <a class="topbar__mark" href="#top" aria-label="Back to the top of the page">
+      <span class="monogram-sm" aria-hidden="true">AAH</span>
+      <span class="topbar__name">Ahmad Andhika Haririe</span>
+    </a>
+
+    <nav class="topbar__nav" aria-label="Sections">
+      <ul class="topbar__links" id="section-nav">
+        <li><a href="#about">About</a></li>
+        <li><a href="#craft">Craft</a></li>
+        <li><a href="#toolbox">Toolbox</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#notes">Notes</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="topbar__tools">
+      <button class="icon-btn" type="button" id="palette-open" aria-label="Search this site" title="Search (Ctrl + K)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      </button>
+      <button class="icon-btn" type="button" id="theme-toggle" aria-label="Switch to the night edition" aria-pressed="false" title="Day / night edition">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.6M12 19v2.6M2.4 12h2.6M19 12h2.6M5.2 5.2l1.9 1.9M16.9 16.9l1.9 1.9M18.8 5.2l-1.9 1.9M7.1 16.9l-1.9 1.9"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 019.8 4a8.4 8.4 0 102.4 16.5 8.4 8.4 0 007.8-6.3z"/></svg>
+      </button>
+      <button class="icon-btn topbar__burger" type="button" id="menu-toggle" aria-label="Open the section menu" aria-expanded="false" aria-controls="drawer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="topbar__progress" id="read-progress" role="presentation"><span></span></div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Section menu">
+    <p class="drawer__title">Contents</p>
+    <nav>
+      <ol class="drawer__list">
+        <li><a href="#about"><span class="numeral">I</span> About</a></li>
+        <li><a href="#craft"><span class="numeral">II</span> Craft</a></li>
+        <li><a href="#toolbox"><span class="numeral">III</span> Toolbox</a></li>
+        <li><a href="#work"><span class="numeral">IV</span> Selected work</a></li>
+        <li><a href="#journey"><span class="numeral">V</span> Journey</a></li>
+        <li><a href="#landmarks"><span class="numeral">VI</span> Landmarks</a></li>
+        <li><a href="#notes"><span class="numeral">VII</span> Notes</a></li>
+        <li><a href="#letters"><span class="numeral">VIII</span> Letters</a></li>
+        <li><a href="#contact"><span class="numeral">IX</span> Correspondence</a></li>
+      </ol>
+    </nav>
+    <button class="btn btn--ghost drawer__close" type="button" id="drawer-close">Close</button>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ==========================================================================
+     THE FRONT PAGE
+     ======================================================================= -->
+<section class="frontpage" id="top">
+  <div class="shell">
+    <div class="frontpage__sheet">
+
+      <div class="rule rule--double"></div>
+
+      <p class="dateline">
+        <span>Vol.&nbsp;II</span>
+        <span class="dateline__sep" aria-hidden="true">&bull;</span>
+        <span>No.&nbsp;<span id="dateline-issue">VII</span></span>
+        <span class="dateline__sep" aria-hidden="true">&bull;</span>
+        <time id="dateline-date" datetime="">&nbsp;</time>
+        <span class="dateline__sep" aria-hidden="true">&bull;</span>
+        <span>Est. MMXXIV</span>
+      </p>
+
+      <div class="rule"></div>
+
+      <p class="frontpage__kicker">The personal record &amp; portfolio of</p>
+
+      <h1 class="frontpage__name">
+        <span>Ahmad</span>
+        <span>Andhika</span>
+        <span>Haririe</span>
+      </h1>
+
+      <div class="rule"></div>
+
+      <p class="frontpage__strap">
+        <span class="strap__static">Builds</span>
+        <span class="typewriter" id="typewriter" aria-live="polite"
+              data-words="full-stack web applications|Flutter apps for Android &amp; iOS|services on the network edge|small worlds in Godot|REST APIs that stay tidy"></span><span class="caret" aria-hidden="true"></span>
+      </p>
+
+      <div class="rule rule--double"></div>
+
+      <div class="frontpage__body">
+        <figure class="portrait">
+          <div class="portrait__frame">
+            <!-- To use a photograph instead of the engraving, save it as
+                 /assets/img/portrait.jpg and uncomment the line below; the CSS
+                 hides the monogram whenever the photo is present.
+            <img class="portrait__photo" src="/assets/img/portrait.jpg" width="440" height="520"
+                 alt="Portrait of Ahmad Andhika Haririe">
+            -->
+            <svg class="monogram" viewBox="0 0 200 200" role="img" aria-label="Monogram: A A H">
+              <circle class="monogram__ring" cx="100" cy="100" r="92"/>
+              <circle class="monogram__ring monogram__ring--thin" cx="100" cy="100" r="85"/>
+              <circle class="monogram__ticks" cx="100" cy="100" r="76"/>
+              <text class="monogram__letter" x="100" y="118" text-anchor="middle">A</text>
+              <text class="monogram__sub" x="100" y="146" text-anchor="middle">A&thinsp;&middot;&thinsp;H</text>
+              <path class="monogram__flourish" d="M62 62q38-16 76 0"/>
+              <path class="monogram__flourish" d="M62 158q38 14 76 0"/>
+            </svg>
+          </div>
+          <figcaption class="portrait__caption">The proprietor, engraved</figcaption>
+        </figure>
+
+        <div class="frontpage__lede">
+          <p class="lede">
+            <span class="dropcap">I</span> build software the way a printer sets a page — carefully,
+            and with a bias toward things that still read well years later. Full-stack web with
+            <em>React</em>, <em>Svelte</em> and <em>Laravel</em>; mobile with <em>Flutter</em>;
+            services that run at the edge on <em>Cloudflare Workers</em>; and, when the evening
+            allows it, games in <em>Godot</em>.
+          </p>
+          <p class="lede lede--small">
+            Seven public repositories, nine languages, five platforms. Everything below is
+            drawn from work that actually shipped.
+          </p>
+
+          <div class="frontpage__actions">
+            <a class="btn btn--solid" href="#work">Read the work<span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="btn" href="#contact">Get in touch</a>
+            <button class="btn btn--ghost" type="button" id="print-cv">Print the résumé</button>
+          </div>
+
+          <ul class="social" aria-label="Elsewhere">
+            <li>
+              <a href="https://github.com/trustedtft07" rel="me noopener" target="_blank" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M12 1.8a10.2 10.2 0 00-3.2 19.9c.5.1.7-.2.7-.5v-1.9c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.2 10.2 0 0012 1.8z"/></svg>
+                <span>GitHub</span>
+              </a>
+            </li>
+            <li>
+              <a href="mailto:ahmadandhikaharirie@gmail.com" aria-label="Email">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="5" width="18.8" height="14" rx="1.6"/><path d="M3 6.5l9 6.2 9-6.2"/></svg>
+                <span>Email</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://ahmadandhikaharirie.my.id" rel="me">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.2 12h17.6M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg>
+                <span>my.id</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule rule--double"></div>
+    </div>
+
+    <a class="scroll-cue" href="#about" aria-label="Continue to the next section">
+      <span class="scroll-cue__label">Continued below</span>
+      <span class="scroll-cue__arrow" aria-hidden="true"></span>
+    </a>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     TICKER
+     ======================================================================= -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <span class="ticker__group">
+      <b>React</b><i>&#10022;</i><b>TypeScript</b><i>&#10022;</i><b>Flutter</b><i>&#10022;</i><b>Laravel</b><i>&#10022;</i><b>Svelte</b><i>&#10022;</i><b>Cloudflare&nbsp;Workers</b><i>&#10022;</i><b>Firebase</b><i>&#10022;</i><b>Godot&nbsp;4</b><i>&#10022;</i><b>Tailwind&nbsp;CSS</b><i>&#10022;</i><b>Python</b><i>&#10022;</i><b>MySQL</b><i>&#10022;</i><b>Vite</b><i>&#10022;</i>
+    </span>
+    <span class="ticker__group">
+      <b>React</b><i>&#10022;</i><b>TypeScript</b><i>&#10022;</i><b>Flutter</b><i>&#10022;</i><b>Laravel</b><i>&#10022;</i><b>Svelte</b><i>&#10022;</i><b>Cloudflare&nbsp;Workers</b><i>&#10022;</i><b>Firebase</b><i>&#10022;</i><b>Godot&nbsp;4</b><i>&#10022;</i><b>Tailwind&nbsp;CSS</b><i>&#10022;</i><b>Python</b><i>&#10022;</i><b>MySQL</b><i>&#10022;</i><b>Vite</b><i>&#10022;</i>
+    </span>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     I — ABOUT
+     ======================================================================= -->
+<section class="section" id="about">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">I</p>
+      <h2 class="section__title">About the author</h2>
+      <p class="section__standfirst">A short account of who is doing the building, and why.</p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <div class="about">
+      <div class="about__prose reveal">
+        <p>
+          <span class="dropcap">M</span>y name is Ahmad Andhika Haririe. I write software across an
+          unusually wide field for one person: browser front-ends, PHP and JavaScript back-ends,
+          Android and iOS applications from a single Flutter codebase, and 2D games in Godot.
+          The through-line is not a framework — it is a preference for systems that a stranger
+          can open six months later and still understand.
+        </p>
+        <p>
+          Most of what I have built started as a problem someone I know actually had. A workshop
+          that lost bookings to a paper ledger became <a href="#work" data-open-project="bengkelaja">Bengkel&nbsp;Aja</a>.
+          A kitchen throwing away food became <a href="#work" data-open-project="zerowaste">ZeroWaste</a>.
+          A small merchant who could not take QRIS payments became a
+          <a href="#work" data-open-project="posumkm">point-of-sale app</a>. The games came from
+          wanting to know how the other half of the industry thinks.
+        </p>
+        <p>
+          I am comfortable owning a feature end to end — schema, API, interface, deployment — and
+          I would rather ship something small that works than something large that demonstrates.
+          At the moment I am spending my time on edge computing: this site, and the mail server
+          behind my own domain, both run on Cloudflare's network with no origin server at all.
+        </p>
+
+        <figure class="signature">
+          <svg viewBox="0 0 300 90" role="img" aria-label="Signature of A. A. Haririe">
+            <path d="M12 66c14-30 26-46 33-46s8 16 9 30c1 12 4 18 10 18 8 0 13-10 19-24 5-12 9-18 13-18s5 8 6 20c1 10 3 16 8 16 7 0 12-9 18-22"/>
+            <path d="M108 44c14-3 26-7 34-12"/>
+            <path d="M152 70V26c0-4 2-6 6-6 9 0 15 7 15 15s-6 14-15 14h-6"/>
+            <path d="M173 49c9 14 14 21 20 21 5 0 8-4 8-10"/>
+            <path d="M209 40v30M209 40c0-6 3-10 7-10s6 3 6 9"/>
+            <path d="M232 46c6-4 12-6 16-6 5 0 7 3 7 9v21"/>
+            <path d="M266 40c-6 0-11 5-11 12s5 12 11 12c7 0 12-5 12-12"/>
+            <path d="M40 78c60 10 140 8 216-6"/>
+          </svg>
+          <figcaption>Set in Garamond, signed in ink.</figcaption>
+        </figure>
+      </div>
+
+      <aside class="about__facts reveal">
+        <div class="panel">
+          <p class="panel__title">In brief</p>
+          <dl class="facts">
+            <div><dt>Based in</dt><dd>Indonesia &middot; UTC+7</dd></div>
+            <div><dt>Field</dt><dd>Full-stack, mobile &amp; games</dd></div>
+            <div><dt>Writing code since</dt><dd>2024</dd></div>
+            <div><dt>Languages</dt><dd>Bahasa Indonesia, English</dd></div>
+            <div><dt>Open to</dt><dd>Internships, freelance, collaboration</dd></div>
+            <div><dt>Reply time</dt><dd>Usually within a day</dd></div>
+          </dl>
+          <a class="panel__link" href="#contact">Send a letter &rarr;</a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="rule rule--double"></div>
+
+    <ul class="stats reveal">
+      <li class="stat">
+        <span class="stat__value" data-count-to="7" data-count-pad="2">00</span>
+        <span class="stat__label">Public repositories</span>
+      </li>
+      <li class="stat">
+        <span class="stat__value" data-count-to="9" data-count-pad="2">00</span>
+        <span class="stat__label">Languages &amp; runtimes</span>
+      </li>
+      <li class="stat">
+        <span class="stat__value" data-count-to="5" data-count-pad="2">00</span>
+        <span class="stat__label">Platforms shipped to</span>
+      </li>
+      <li class="stat">
+        <span class="stat__value" data-count-to="2024">0000</span>
+        <span class="stat__label">Building in public since</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     II — CRAFT
+     ======================================================================= -->
+<section class="section section--tinted" id="craft">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">II</p>
+      <h2 class="section__title">The craft</h2>
+      <p class="section__standfirst">Four kinds of work I take on, and what you actually receive.</p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <ul class="craft">
+      <li class="craft__item card reveal">
+        <span class="card__index" aria-hidden="true">01</span>
+        <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
+          <rect x="5" y="9" width="38" height="30" rx="2"/><path d="M5 17h38"/>
+          <circle cx="10" cy="13" r="1.1" class="fill"/><circle cx="14.5" cy="13" r="1.1" class="fill"/>
+          <path d="M15 24l-4 4 4 4M27 22l-4 12M33 24l4 4-4 4"/>
+        </svg>
+        <h3 class="craft__title">Web applications</h3>
+        <p>
+          Component-driven front-ends in React or Svelte, wired to a Laravel, Node or Workers
+          back-end. Authentication, roles, live data, and an admin surface that a non-engineer
+          can actually operate.
+        </p>
+        <p class="craft__meta">React &middot; Svelte &middot; Laravel &middot; Tailwind &middot; Vite</p>
+      </li>
+
+      <li class="craft__item card reveal">
+        <span class="card__index" aria-hidden="true">02</span>
+        <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
+          <rect x="14" y="5" width="20" height="38" rx="3"/><path d="M21 9.5h6"/>
+          <circle cx="24" cy="37.5" r="1.6" class="fill"/><path d="M18 17h12M18 22h12M18 27h7"/>
+        </svg>
+        <h3 class="craft__title">Mobile applications</h3>
+        <p>
+          One Flutter codebase, two stores. Offline-tolerant state, camera and barcode input,
+          local notifications, and payment gateways wired up properly — including QRIS through
+          Midtrans.
+        </p>
+        <p class="craft__meta">Flutter &middot; Dart &middot; Firebase &middot; Midtrans</p>
+      </li>
+
+      <li class="craft__item card reveal">
+        <span class="card__index" aria-hidden="true">03</span>
+        <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M11 31a8 8 0 011.4-15.9A11 11 0 0133 17.5 7.6 7.6 0 0137 31z"/>
+          <path d="M24 23v15M19 33l5 5 5-5"/>
+        </svg>
+        <h3 class="craft__title">APIs &amp; edge services</h3>
+        <p>
+          REST APIs with sane resources and honest status codes, plus serverless services on
+          Cloudflare Workers backed by D1 and R2 — no origin box to patch, and a cold start you
+          cannot measure.
+        </p>
+        <p class="craft__meta">Workers &middot; D1 &middot; R2 &middot; REST &middot; MySQL</p>
+      </li>
+
+      <li class="craft__item card reveal">
+        <span class="card__index" aria-hidden="true">04</span>
+        <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
+          <rect x="4" y="15" width="40" height="20" rx="7"/><path d="M14 21v8M10 25h8"/>
+          <circle cx="32" cy="23" r="2" class="fill"/><circle cx="37" cy="27.5" r="2" class="fill"/>
+        </svg>
+        <h3 class="craft__title">Games &amp; interactive</h3>
+        <p>
+          2D games in Godot 4: state-machine characters, boss encounters, wave systems and tower
+          economies — exported to desktop and Android, with Python tooling where the editor stops
+          being enough.
+        </p>
+        <p class="craft__meta">Godot 4 &middot; GDScript &middot; Python</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     III — TOOLBOX
+     ======================================================================= -->
+<section class="section" id="toolbox">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">III</p>
+      <h2 class="section__title">The toolbox</h2>
+      <p class="section__standfirst">
+        Every tool listed here has been used to finish something, not merely to try it.
+        Five pips is daily fluency; two is enough to be useful with the documentation open.
+      </p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <div class="toolbox">
+      <section class="toolbox__group card reveal">
+        <h3 class="toolbox__heading">Languages</h3>
+        <ul class="skills">
+          <li class="skill"><span class="skill__name">JavaScript</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Dart</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">TypeScript</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">PHP</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Python</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">GDScript</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">SQL</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">HTML &amp; CSS</span><span class="pips" data-level="5" role="img" aria-label="5 out of 5"></span></li>
+        </ul>
+      </section>
+
+      <section class="toolbox__group card reveal">
+        <h3 class="toolbox__heading">Front of house</h3>
+        <ul class="skills">
+          <li class="skill"><span class="skill__name">React 18</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Svelte</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Tailwind CSS</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Vite</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Blade templates</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Accessibility &amp; semantics</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+        </ul>
+      </section>
+
+      <section class="toolbox__group card reveal">
+        <h3 class="toolbox__heading">Back of house</h3>
+        <ul class="skills">
+          <li class="skill"><span class="skill__name">Laravel 12</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Cloudflare Workers</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Firebase Auth &amp; Firestore</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">MySQL</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">D1 &amp; R2 storage</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">REST API design</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+        </ul>
+      </section>
+
+      <section class="toolbox__group card reveal">
+        <h3 class="toolbox__heading">Mobile &amp; games</h3>
+        <ul class="skills">
+          <li class="skill"><span class="skill__name">Flutter 3</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Godot 4</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Android packaging</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Midtrans payments</span><span class="pips" data-level="3" role="img" aria-label="3 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Finite state machines</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+        </ul>
+      </section>
+
+      <section class="toolbox__group card reveal">
+        <h3 class="toolbox__heading">Practice</h3>
+        <ul class="skills">
+          <li class="skill"><span class="skill__name">Git &amp; GitHub</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Object-oriented design</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Technical writing</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+          <li class="skill"><span class="skill__name">Deployment &amp; DNS</span><span class="pips" data-level="4" role="img" aria-label="4 out of 5"></span></li>
+        </ul>
+      </section>
+
+      <section class="toolbox__group card card--quote reveal">
+        <blockquote class="pullquote">
+          <p>Any fool can write code that a computer understands. Good programmers write code that humans understand.</p>
+          <footer>— Martin Fowler</footer>
+        </blockquote>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     IV — SELECTED WORK
+     ======================================================================= -->
+<section class="section section--tinted" id="work">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">IV</p>
+      <h2 class="section__title">Selected work</h2>
+      <p class="section__standfirst">
+        Seven projects, every one of them public. Filter by discipline, or search the plates
+        by name, technology or idea.
+      </p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <div class="workbar reveal">
+      <div class="filters" role="group" aria-label="Filter work by discipline">
+        <button class="filter is-active" type="button" data-filter="all" aria-pressed="true">All <span class="filter__count">7</span></button>
+        <button class="filter" type="button" data-filter="web" aria-pressed="false">Web <span class="filter__count">2</span></button>
+        <button class="filter" type="button" data-filter="mobile" aria-pressed="false">Mobile <span class="filter__count">2</span></button>
+        <button class="filter" type="button" data-filter="edge" aria-pressed="false">Edge &amp; API <span class="filter__count">1</span></button>
+        <button class="filter" type="button" data-filter="game" aria-pressed="false">Games <span class="filter__count">2</span></button>
+      </div>
+
+      <div class="searchbox">
+        <label class="sr-only" for="work-search">Search the work</label>
+        <svg class="searchbox__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input class="searchbox__input" id="work-search" type="search" placeholder="Search — try flutter, firebase, godot" autocomplete="off" spellcheck="false">
+        <button class="searchbox__clear" type="button" id="work-search-clear" aria-label="Clear the search" hidden>&times;</button>
+      </div>
+    </div>
+
+    <p class="work-status" id="work-status" role="status" aria-live="polite"></p>
+
+    <ul class="work" id="work-grid">
+
+      <li class="project card reveal" data-id="quickinbox" data-category="edge"
+          data-keywords="svelte typescript cloudflare workers d1 r2 email mail smtp mcp cli api self-hosted">
+        <div class="project__plate">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <rect class="plate__frame" x="7" y="7" width="306" height="186"/>
+            <rect class="plate__frame plate__frame--inner" x="14" y="14" width="292" height="172"/>
+            <use href="#glyph-mail" x="120" y="38" width="80" height="80"/>
+            <text class="plate__num" x="160" y="166">PLATE I</text>
+          </svg>
+        </div>
+        <div class="project__body">
+          <p class="project__meta"><span class="tag tag--cat">Edge &amp; API</span><span class="project__year">Sept 2026</span></p>
+          <h3 class="project__title">Quickinbox</h3>
+          <p class="project__summary">
+            A complete mail service for my own domain — inbox, threads, attachments and a REST
+            API — running entirely on Cloudflare Workers with no mail server to maintain.
+          </p>
+          <ul class="project__stack"><li>Svelte</li><li>TypeScript</li><li>Workers</li><li>D1</li><li>R2</li></ul>
+          <div class="project__actions">
+            <button class="btn btn--sm" type="button" data-open-project="quickinbox">Read the case</button>
+            <a class="btn btn--sm btn--ghost" href="https://email.ahmadandhikaharirie.my.id" target="_blank" rel="noopener">Live</a>
+            <a class="btn btn--sm btn--ghost" href="https://github.com/trustedtft07/quickmail" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <template class="project__detail">
+          <p class="detail__lede">
+            Running your own mail on your own domain usually means a server, a spam filter and a
+            standing maintenance bill. This does it with none of those: inbound mail is delivered
+            straight into a Worker, attachments land in R2, and the whole client is a Svelte app
+            served from the same edge.
+          </p>
+          <h4>What it does</h4>
+          <ul class="detail__list">
+            <li>Real mail in and out — the provider delivers directly into the Worker, nothing is polled.</li>
+            <li>Threads: replies group into conversations and quoted history collapses.</li>
+            <li>Attachments stored in R2, both inbound and outbound.</li>
+            <li>Received HTML rendered inside a sandboxed iframe, so a hostile message cannot reach the app.</li>
+            <li>Multiple domains and users, with per-user addresses and an admin catch-all.</li>
+            <li>Delivery status tracking — delivered, bounced, complained.</li>
+            <li>A REST API, a CLI and an MCP server, so scripts and agents can read and send mail too.</li>
+          </ul>
+          <h4>Why it is here</h4>
+          <p>
+            This is the infrastructure behind mail on <code>ahmadandhikaharirie.my.id</code>. It is
+            self-hosted and operated by me on my own Cloudflare account, built on the open-source
+            Quickinbox project rather than written from nothing — the work was in deploying,
+            configuring and running it against a live domain, including DNS, DKIM and SPF.
+          </p>
+          <h4>Notes</h4>
+          <p>
+            A Worker has no filesystem and no long-lived process, so every piece of state has to be
+            deliberate: D1 for structure, R2 for bytes, and nothing kept in memory between requests.
+          </p>
+        </template>
+      </li>
+
+      <li class="project card reveal" data-id="bengkelaja" data-category="web"
+          data-keywords="react vite tailwind firebase firestore auth booking workshop mechanic realtime context">
+        <div class="project__plate">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <rect class="plate__frame" x="7" y="7" width="306" height="186"/>
+            <rect class="plate__frame plate__frame--inner" x="14" y="14" width="292" height="172"/>
+            <use href="#glyph-wrench" x="120" y="38" width="80" height="80"/>
+            <text class="plate__num" x="160" y="166">PLATE II</text>
+          </svg>
+        </div>
+        <div class="project__body">
+          <p class="project__meta"><span class="tag tag--cat">Web</span><span class="project__year">May 2026</span></p>
+          <h3 class="project__title">Bengkel Aja</h3>
+          <p class="project__summary">
+            Vehicle workshop booking with live status tracking and an emergency mechanic call-out,
+            built for a trade that still runs on paper ledgers.
+          </p>
+          <ul class="project__stack"><li>React 18</li><li>Vite 5</li><li>Tailwind 3</li><li>Firestore</li></ul>
+          <div class="project__actions">
+            <button class="btn btn--sm" type="button" data-open-project="bengkelaja">Read the case</button>
+            <a class="btn btn--sm btn--ghost" href="https://bengkel-aja.vercel.app" target="_blank" rel="noopener">Live</a>
+            <a class="btn btn--sm btn--ghost" href="https://github.com/trustedtft07/BengkelAja" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <template class="project__detail">
+          <p class="detail__lede">
+            Most small workshops in Indonesia take bookings by telephone and record them in a book.
+            Bengkel Aja replaces the book: customers reserve a service slot, call an emergency
+            mechanic if they are stranded, and watch the status of the job change in real time.
+          </p>
+          <h4>What it does</h4>
+          <ul class="detail__list">
+            <li>Service booking with a chosen slot and vehicle details.</li>
+            <li>Emergency mechanic call-out for breakdowns away from the workshop.</li>
+            <li>Real-time booking status, straight from Firestore listeners — no refresh button.</li>
+            <li>Email and password authentication through Firebase Auth.</li>
+            <li>Global state through the React Context API, deliberately without a state library.</li>
+          </ul>
+          <h4>How it is built</h4>
+          <p>
+            React 18 on Vite 5, styled with Tailwind CSS 3, with Firestore as the only back end.
+            Keeping state in Context rather than reaching for Redux was a decision, not an
+            oversight: the application has one user, one list of bookings and one live
+            subscription, and a store would have added ceremony without removing a problem.
+          </p>
+          <h4>Result</h4>
+          <p>Deployed and publicly reachable at <code>bengkel-aja.vercel.app</code>.</p>
+        </template>
+      </li>
+
+      <li class="project card reveal" data-id="zerowaste" data-category="mobile"
+          data-keywords="flutter dart firebase barcode scanner notifications groq ai recipe food waste oop android ios">
+        <div class="project__plate">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <rect class="plate__frame" x="7" y="7" width="306" height="186"/>
+            <rect class="plate__frame plate__frame--inner" x="14" y="14" width="292" height="172"/>
+            <use href="#glyph-leaf" x="120" y="38" width="80" height="80"/>
+            <text class="plate__num" x="160" y="166">PLATE III</text>
+          </svg>
+        </div>
+        <div class="project__body">
+          <p class="project__meta"><span class="tag tag--cat">Mobile</span><span class="project__year">May 2026</span></p>
+          <h3 class="project__title">ZeroWaste</h3>
+          <p class="project__summary">
+            A Flutter kitchen assistant that tracks food stock, warns you three days before
+            anything expires, and turns what is left into a recipe.
+          </p>
+          <ul class="project__stack"><li>Flutter</li><li>Dart</li><li>Firebase</li><li>Groq AI</li></ul>
+          <div class="project__actions">
+            <button class="btn btn--sm" type="button" data-open-project="zerowaste">Read the case</button>
+            <a class="btn btn--sm btn--ghost" href="https://github.com/trustedtft07/ZeroWaste" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <template class="project__detail">
+          <p class="detail__lede">
+            Household food waste is mostly a memory problem: something was bought, put at the back
+            of a shelf, and forgotten until it had to be thrown away. ZeroWaste keeps the shelf in
+            your pocket and speaks up before the deadline rather than after it.
+          </p>
+          <h4>What it does</h4>
+          <ul class="detail__list">
+            <li>Authentication with Firebase — register, sign in, per-user stock.</li>
+            <li>Inventory management: add, browse and remove ingredients with expiry dates.</li>
+            <li>Barcode scanning through the camera, so adding an item takes a second.</li>
+            <li>Local notifications three days before an item expires.</li>
+            <li>AI recipe suggestions from the ingredients you select, generated through Groq.</li>
+            <li>A waste score that grades how healthy your stock currently is.</li>
+          </ul>
+          <h4>The design study</h4>
+          <p>
+            The codebase was also written as a demonstration of object-oriented design in Dart, and
+            the README walks through each pillar against real classes: encapsulation of the stock
+            model, inheritance across item types, polymorphism in the notification handlers, and
+            abstraction at the repository boundary. It is the clearest example I have of code
+            written to be read as well as run.
+          </p>
+        </template>
+      </li>
+
+      <li class="project card reveal" data-id="posumkm" data-category="mobile"
+          data-keywords="flutter dart firebase midtrans qris payment pos kasir merchant wallet withdrawal umkm">
+        <div class="project__plate">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <rect class="plate__frame" x="7" y="7" width="306" height="186"/>
+            <rect class="plate__frame plate__frame--inner" x="14" y="14" width="292" height="172"/>
+            <use href="#glyph-receipt" x="120" y="38" width="80" height="80"/>
+            <text class="plate__num" x="160" y="166">PLATE IV</text>
+          </svg>
+        </div>
+        <div class="project__body">
+          <p class="project__meta"><span class="tag tag--cat">Mobile</span><span class="project__year">May 2026</span></p>
+          <h3 class="project__title">POS UMKM</h3>
+          <p class="project__summary">
+            Point of sale for Indonesian small businesses: QRIS payments through Midtrans, a
+            cashier team with PIN logins, and a merchant wallet that withdraws to a real bank.
+          </p>
+          <ul class="project__stack"><li>Flutter 3</li><li>Firebase</li><li>Midtrans</li><li>QRIS</li></ul>
+          <div class="project__actions">
+            <button class="btn btn--sm" type="button" data-open-project="posumkm">Read the case</button>
+            <a class="btn btn--sm btn--ghost" href="https://github.com/trustedtft07/UasRPL" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <template class="project__detail">
+          <p class="detail__lede">
+            A warung with a QRIS sticker still has to reconcile payments by hand. This is the
+            missing half: the merchant generates the code from the app, the payment status syncs
+            itself, and the balance is a number the owner can actually withdraw.
+          </p>
+          <h4>What it does</h4>
+          <ul class="detail__list">
+            <li>Two roles: merchant (owner) and cashier, the latter signing in with a PIN.</li>
+            <li>QRIS payment codes generated through Midtrans Snap.</li>
+            <li>Automatic payment status synchronisation — no manual reconciliation.</li>
+            <li>A real-time merchant wallet balance.</li>
+            <li>Cashier team management, so staff can be added and removed by the owner.</li>
+            <li>Withdrawals to a bank account or digital wallet.</li>
+            <li>Full transaction and withdrawal history, plus shop profile settings.</li>
+          </ul>
+          <h4>Notes</h4>
+          <p>
+            Built against the Midtrans sandbox on Flutter 3 with Firebase Auth and Firestore. The
+            hardest part was not the payment call but the state around it: a payment can succeed on
+            the gateway while the phone is offline, so the app treats gateway status as the truth
+            and its own view as a cache.
+          </p>
+        </template>
+      </li>
+
+      <li class="project card reveal" data-id="gardenplants" data-category="web"
+          data-keywords="laravel php mysql rest api crud blade vanilla javascript backend frontend">
+        <div class="project__plate">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <rect class="plate__frame" x="7" y="7" width="306" height="186"/>
+            <rect class="plate__frame plate__frame--inner" x="14" y="14" width="292" height="172"/>
+            <use href="#glyph-plant" x="120" y="38" width="80" height="80"/>
+            <text class="plate__num" x="160" y="166">PLATE V</text>
+          </svg>
+        </div>
+        <div class="project__body">
+          <p class="project__meta"><span class="tag tag--cat">Web</span><span class="project__year">May 2026</span></p>
+          <h3 class="project__title">Garden Plants Manager</h3>
+          <p class="project__summary">
+            A Laravel 12 REST API with a dependency-free front end — the smallest honest
+            demonstration of a full CRUD stack, front to back.
+          </p>
+          <ul class="project__stack"><li>Laravel 12</li><li>PHP 8.2</li><li>MySQL</li><li>Vanilla JS</li></ul>
+          <div class="project__actions">
+            <button class="btn btn--sm" type="button" data-open-project="gardenplants">Read the case</button>
+            <a class="btn btn--sm btn--ghost" href="https://github.com/trustedtft07/garden-plants" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <template class="project__detail">
+          <p class="detail__lede">
+            Two applications in one repository: a Laravel REST API and a front end written in plain
+            HTML, CSS and JavaScript with no framework at all. The point was to keep the seam
+            between them completely visible.
+          </p>
+          <h4>Shape of it</h4>
+          <ul class="detail__list">
+            <li><code>garden-plants-api</code> — Laravel 12, a resource controller and a single table.</li>
+            <li><code>garden-plants-frontend</code> — fetch calls against that API, rendered by hand.</li>
+            <li>A deliberately small schema: plant id, flower name, water requirement in millilitres.</li>
+            <li>No timestamps, no soft deletes, nothing the exercise did not need.</li>
+          </ul>
+          <h4>Why bother</h4>
+          <p>
+            Frameworks are good at hiding the request. Writing the client with <code>fetch</code>
+            and the server with a bare resource controller makes every part of the round trip —
+            method, status, payload, error — something you have to choose on purpose. It is the
+            project I would point a beginner at first.
+          </p>
+        </template>
+      </li>
+
+      <li class="project card reveal" data-id="finpro" data-category="game"
+          data-keywords="godot gdscript python action rpg boss bonfire quest fsm state machine map generation">
+        <div class="project__plate">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <rect class="plate__frame" x="7" y="7" width="306" height="186"/>
+            <rect class="plate__frame plate__frame--inner" x="14" y="14" width="292" height="172"/>
+            <use href="#glyph-flame" x="120" y="38" width="80" height="80"/>
+            <text class="plate__num" x="160" y="166">PLATE VI</text>
+          </svg>
+        </div>
+        <div class="project__body">
+          <p class="project__meta"><span class="tag tag--cat">Games</span><span class="project__year">Aug 2026</span></p>
+          <h3 class="project__title">Finpro</h3>
+          <p class="project__summary">
+            A Godot 4 action RPG with bonfire checkpoints, a quest system and boss encounters,
+            driven by a hand-rolled finite state machine.
+          </p>
+          <ul class="project__stack"><li>Godot 4</li><li>GDScript</li><li>Python</li></ul>
+          <div class="project__actions">
+            <button class="btn btn--sm" type="button" data-open-project="finpro">Read the case</button>
+            <a class="btn btn--sm btn--ghost" href="https://github.com/trustedtft07/Finpro" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <template class="project__detail">
+          <p class="detail__lede">
+            The largest thing I have built: a 2D action role-playing game where every character —
+            player, enemy and boss alike — runs through the same state machine, and progress is
+            kept the old way, at a bonfire.
+          </p>
+          <h4>Systems</h4>
+          <ul class="detail__list">
+            <li>A shared <code>CharacterBase</code> with a finite state machine, so the player and every enemy speak the same language.</li>
+            <li>Boss encounters with their own scenes and behaviour scripts.</li>
+            <li>Bonfire checkpoints — rest, restore, and respawn the world.</li>
+            <li>A quest system with templates and live quest updates.</li>
+            <li>Attack data as a resource, so a weapon is configuration rather than code.</li>
+            <li>Projectiles, coin pickups, a score tracker, a death screen and a pause menu.</li>
+            <li>Camera bounds per level, and area exits that stitch levels together.</li>
+          </ul>
+          <h4>Tooling</h4>
+          <p>
+            Roughly half the repository is Python rather than GDScript: a map generation toolchain
+            that produces level layouts outside the editor. When the editor stops being the fastest
+            way to make a change, the right answer is usually a script.
+          </p>
+        </template>
+      </li>
+
+      <li class="project card reveal" data-id="towerdefense" data-category="game"
+          data-keywords="godot gdscript tower defense waves upgrade projectile mortar electric android apk">
+        <div class="project__plate">
+          <svg viewBox="0 0 320 200" aria-hidden="true">
+            <rect class="plate__frame" x="7" y="7" width="306" height="186"/>
+            <rect class="plate__frame plate__frame--inner" x="14" y="14" width="292" height="172"/>
+            <use href="#glyph-tower" x="120" y="38" width="80" height="80"/>
+            <text class="plate__num" x="160" y="166">PLATE VII</text>
+          </svg>
+        </div>
+        <div class="project__body">
+          <p class="project__meta"><span class="tag tag--cat">Games</span><span class="project__year">May 2026</span></p>
+          <h3 class="project__title">Tower Defense</h3>
+          <p class="project__summary">
+            Four upgradeable tower types, three projectile behaviours and a wave manager that keeps
+            raising the stakes — packaged for Android.
+          </p>
+          <ul class="project__stack"><li>Godot 4</li><li>GDScript</li><li>Android</li></ul>
+          <div class="project__actions">
+            <button class="btn btn--sm" type="button" data-open-project="towerdefense">Read the case</button>
+            <a class="btn btn--sm btn--ghost" href="https://github.com/trustedtft07/TowerDefense" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <template class="project__detail">
+          <p class="detail__lede">
+            A tower defense is a small economy wearing a game as a costume. Every decision is the
+            same one — spend now on a new tower, or save to upgrade the one already holding the
+            line — and the whole design is about making that choice feel tight.
+          </p>
+          <h4>Systems</h4>
+          <ul class="detail__list">
+            <li>Four tower classes, each with its own script and upgrade path.</li>
+            <li>Three projectile behaviours: single target, mortar with splash, and chaining electric.</li>
+            <li>A wave manager that schedules and scales each incoming wave.</li>
+            <li>Build spots that gate placement, so the map is the real difficulty curve.</li>
+            <li>Deployable troops alongside static towers.</li>
+            <li>A global autoload for currency, lives and run state.</li>
+          </ul>
+          <h4>Shipping</h4>
+          <p>
+            Exported to Android with signing presets committed alongside the project, which turned
+            out to be a more instructive exercise than the gameplay code — touch input, screen
+            sizes and package signing are all problems the editor does not solve for you.
+          </p>
+        </template>
+      </li>
+    </ul>
+
+    <p class="work-empty" id="work-empty" hidden>
+      <span class="ornament" aria-hidden="true">&#10086;</span>
+      Nothing in the archive matches that. <button class="link-btn" type="button" id="work-reset">Show everything again</button>
+    </p>
+
+    <p class="work-more reveal">
+      Everything above lives on GitHub, along with the things that did not make the cut.
+      <a href="https://github.com/trustedtft07?tab=repositories" target="_blank" rel="noopener">Browse all repositories &rarr;</a>
+    </p>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     V — JOURNEY
+     ======================================================================= -->
+<section class="section" id="journey">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">V</p>
+      <h2 class="section__title">The journey so far</h2>
+      <p class="section__standfirst">
+        A record kept by commit dates rather than memory. Each entry is a repository that exists
+        and a date you can check.
+      </p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <ol class="timeline">
+      <li class="timeline__item reveal">
+        <p class="timeline__date"><time datetime="2024-10">October 2024</time></p>
+        <div class="timeline__card card">
+          <h3 class="timeline__title">First code in the open</h3>
+          <p>
+            Opened a GitHub account and started working in public rather than in a folder on one
+            machine. Everything after this line has a commit behind it.
+          </p>
+        </div>
+      </li>
+
+      <li class="timeline__item reveal">
+        <p class="timeline__date"><time datetime="2026-05-09">9 May 2026</time></p>
+        <div class="timeline__card card">
+          <h3 class="timeline__title">Tower Defense — first shipped game</h3>
+          <p>
+            Four tower classes, three projectile behaviours and a wave manager in Godot 4, exported
+            and signed for Android. The first thing I built that had to survive somebody else
+            playing it.
+          </p>
+          <p class="timeline__tags"><span class="tag">Godot 4</span><span class="tag">GDScript</span><span class="tag">Android</span></p>
+        </div>
+      </li>
+
+      <li class="timeline__item reveal">
+        <p class="timeline__date"><time datetime="2026-05-11">11 May 2026</time></p>
+        <div class="timeline__card card">
+          <h3 class="timeline__title">POS UMKM — software engineering coursework</h3>
+          <p>
+            A Flutter point-of-sale application with real QRIS payments through Midtrans, two user
+            roles and a withdrawable merchant wallet. The first time an assignment forced me to
+            think about money, and therefore about correctness.
+          </p>
+          <p class="timeline__tags"><span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Midtrans</span></p>
+        </div>
+      </li>
+
+      <li class="timeline__item reveal">
+        <p class="timeline__date"><time datetime="2026-05-13">13 May 2026</time></p>
+        <div class="timeline__card card">
+          <h3 class="timeline__title">Two applications in one week</h3>
+          <p>
+            ZeroWaste, a Flutter kitchen assistant with barcode scanning and AI recipes, and Bengkel
+            Aja, a React and Firebase workshop booking system. Different stacks, same discipline:
+            model the data first, then draw the screens.
+          </p>
+          <p class="timeline__tags"><span class="tag">Flutter</span><span class="tag">React</span><span class="tag">Firestore</span><span class="tag">Groq AI</span></p>
+        </div>
+      </li>
+
+      <li class="timeline__item reveal">
+        <p class="timeline__date"><time datetime="2026-05-26">26 May 2026</time></p>
+        <div class="timeline__card card">
+          <h3 class="timeline__title">Garden Plants — Laravel and the bare metal of HTTP</h3>
+          <p>
+            A Laravel 12 REST API paired with a front end written in nothing but HTML, CSS and
+            JavaScript, so every request and status code had to be chosen deliberately.
+          </p>
+          <p class="timeline__tags"><span class="tag">Laravel 12</span><span class="tag">PHP</span><span class="tag">MySQL</span></p>
+        </div>
+      </li>
+
+      <li class="timeline__item reveal">
+        <p class="timeline__date"><time datetime="2026-08-23">23 August 2026</time></p>
+        <div class="timeline__card card">
+          <h3 class="timeline__title">Finpro — the biggest build yet</h3>
+          <p>
+            A Godot 4 action RPG: state-machine characters, boss encounters, bonfire checkpoints,
+            a quest system, and a Python toolchain for generating maps. Roughly a quarter of a
+            megabyte of source across two languages.
+          </p>
+          <p class="timeline__tags"><span class="tag">Godot 4</span><span class="tag">GDScript</span><span class="tag">Python</span></p>
+        </div>
+      </li>
+
+      <li class="timeline__item reveal">
+        <p class="timeline__date"><time datetime="2026-09-06">6 September 2026</time></p>
+        <div class="timeline__card card timeline__card--now">
+          <h3 class="timeline__title">Running my own domain at the edge</h3>
+          <p>
+            Quickinbox self-hosted on Cloudflare Workers, giving
+            <code>ahmadandhikaharirie.my.id</code> real mail with no server to maintain — and this
+            site published to the same network on the same day.
+          </p>
+          <p class="timeline__tags"><span class="tag">Workers</span><span class="tag">D1</span><span class="tag">R2</span><span class="tag">Svelte</span></p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     VI — LANDMARKS
+     ======================================================================= -->
+<section class="section section--tinted" id="landmarks">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">VI</p>
+      <h2 class="section__title">Landmarks</h2>
+      <p class="section__standfirst">
+        Not certificates — things that are true, and that anyone can verify from the repositories.
+      </p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <ul class="landmarks">
+      <li class="landmark reveal">
+        <span class="seal" aria-hidden="true"><span class="seal__inner">V</span></span>
+        <h3 class="landmark__title">Five platforms</h3>
+        <p>Web, Android, iOS, desktop and the network edge — all reached from work that shipped.</p>
+      </li>
+      <li class="landmark reveal">
+        <span class="seal" aria-hidden="true"><span class="seal__inner">IX</span></span>
+        <h3 class="landmark__title">Nine languages in public</h3>
+        <p>JavaScript, TypeScript, Dart, PHP, Python, GDScript, SQL, HTML and CSS, all in repositories you can read.</p>
+      </li>
+      <li class="landmark reveal">
+        <span class="seal" aria-hidden="true"><span class="seal__inner">&#9993;</span></span>
+        <h3 class="landmark__title">My own mail server</h3>
+        <p>Mail for this domain runs on Cloudflare Workers with D1 and R2, configured, deployed and operated by me.</p>
+      </li>
+      <li class="landmark reveal">
+        <span class="seal" aria-hidden="true"><span class="seal__inner">&#9679;</span></span>
+        <h3 class="landmark__title">Live in production</h3>
+        <p>Bengkel Aja is deployed and publicly reachable, not a screenshot in a slide deck.</p>
+      </li>
+      <li class="landmark reveal">
+        <span class="seal" aria-hidden="true"><span class="seal__inner">&#167;</span></span>
+        <h3 class="landmark__title">Documented, every one</h3>
+        <p>Each significant repository carries a written README — architecture, setup and reasoning, not just a title.</p>
+      </li>
+      <li class="landmark reveal">
+        <span class="seal" aria-hidden="true"><span class="seal__inner">&#8734;</span></span>
+        <h3 class="landmark__title">Full stack, genuinely</h3>
+        <p>Schema, API, interface, build and deployment — owned end to end on every project listed here.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     VII — NOTES
+     ======================================================================= -->
+<section class="section" id="notes">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">VII</p>
+      <h2 class="section__title">Notes &amp; writing</h2>
+      <p class="section__standfirst">
+        I document as I build. These are the longer written pieces that ship inside the
+        repositories themselves — architecture, reasoning and setup, written to be read.
+      </p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <ul class="notes">
+      <li class="note card reveal">
+        <p class="note__meta"><span class="tag">Dart</span><time datetime="2026-05-13">13 May 2026</time></p>
+        <h3 class="note__title">
+          <a href="https://github.com/trustedtft07/ZeroWaste#konsep-oop-dalam-zerowaste" target="_blank" rel="noopener">
+            The four pillars of OOP, checked against a real application
+          </a>
+        </h3>
+        <p class="note__excerpt">
+          Encapsulation, inheritance, polymorphism and abstraction are easy to recite and hard to
+          point at. This walks through each one against actual classes in ZeroWaste — the stock
+          model, the item hierarchy, the notification handlers and the repository boundary.
+        </p>
+        <p class="note__source">README &middot; ZeroWaste &middot; in Bahasa Indonesia</p>
+      </li>
+
+      <li class="note card reveal">
+        <p class="note__meta"><span class="tag">Cloudflare</span><time datetime="2026-09-06">6 September 2026</time></p>
+        <h3 class="note__title">
+          <a href="https://github.com/trustedtft07/quickmail#quick-start" target="_blank" rel="noopener">
+            Running your own mail on Workers, from DNS to inbox
+          </a>
+        </h3>
+        <p class="note__excerpt">
+          What it actually takes to get <code>you&#64;yourdomain</code> working without a mail server:
+          the Worker, the D1 schema, the R2 bucket for attachments, and the DKIM and SPF records
+          that decide whether anyone receives what you send.
+        </p>
+        <p class="note__source">README &middot; Quickinbox</p>
+      </li>
+
+      <li class="note card reveal">
+        <p class="note__meta"><span class="tag">Laravel</span><time datetime="2026-05-26">26 May 2026</time></p>
+        <h3 class="note__title">
+          <a href="https://github.com/trustedtft07/garden-plants#-struktur-project" target="_blank" rel="noopener">
+            An API and a front end that share nothing but HTTP
+          </a>
+        </h3>
+        <p class="note__excerpt">
+          Two applications, one repository, and a deliberately visible seam between them: a Laravel
+          12 resource API on one side, plain fetch calls on the other, and a schema small enough to
+          hold in your head.
+        </p>
+        <p class="note__source">README &middot; Garden Plants &middot; in Bahasa Indonesia</p>
+      </li>
+
+      <li class="note card reveal">
+        <p class="note__meta"><span class="tag">Flutter</span><time datetime="2026-05-11">11 May 2026</time></p>
+        <h3 class="note__title">
+          <a href="https://github.com/trustedtft07/UasRPL#fitur" target="_blank" rel="noopener">
+            Taking QRIS payments from a Flutter application
+          </a>
+        </h3>
+        <p class="note__excerpt">
+          Two roles, one wallet and a payment gateway that is the source of truth: how the POS UMKM
+          app generates QRIS codes through Midtrans Snap, syncs their status, and lets a merchant
+          withdraw the balance.
+        </p>
+        <p class="note__source">README &middot; POS UMKM &middot; in Bahasa Indonesia</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     VIII — LETTERS
+     To print a real recommendation, copy the <li class="letter"> block that is
+     commented out below, fill it in, and drop it into <ul class="letters">.
+     ======================================================================= -->
+<section class="section section--tinted" id="letters">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">VIII</p>
+      <h2 class="section__title">Letters</h2>
+      <p class="section__standfirst">
+        Notes from the people I have built things with — lecturers, teammates and clients.
+      </p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <ul class="letters">
+      <!--
+      <li class="letter card reveal">
+        <blockquote>
+          <p>The quoted recommendation goes here.</p>
+        </blockquote>
+        <footer class="letter__by">
+          <span class="letter__name">Full Name</span>
+          <span class="letter__role">Role, Organisation</span>
+        </footer>
+      </li>
+      -->
+
+      <li class="letter letter--empty card reveal">
+        <svg class="quill" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M50 12C34 14 22 24 18 38c-1 4-3 7-6 10l4 4c3-3 6-5 10-6 14-4 24-16 24-34z"/>
+          <path d="M12 52l16-16"/>
+          <path d="M30 34h10"/>
+        </svg>
+        <p class="letter__prompt">
+          This column is set, but nothing has been printed in it yet. If we have worked together —
+          on coursework, on a client project, or on anything with a deadline — I would be glad to
+          run your words here.
+        </p>
+        <a class="btn btn--sm" href="mailto:ahmadandhikaharirie@gmail.com?subject=A%20letter%20for%20your%20portfolio">Write a letter</a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     IX — CORRESPONDENCE
+     ======================================================================= -->
+<section class="section" id="contact">
+  <div class="shell">
+    <header class="section__head reveal">
+      <p class="section__numeral">IX</p>
+      <h2 class="section__title">Correspondence</h2>
+      <p class="section__standfirst">
+        Available for internships, freelance work and collaboration. Tell me what you are trying
+        to build and I will tell you honestly whether I am the right person for it.
+      </p>
+      <div class="ornament" aria-hidden="true">&#10086;</div>
+    </header>
+
+    <div class="contact">
+      <form class="contact__form card reveal" id="contact-form" novalidate>
+        <p class="form__note">
+          This form opens your own mail application with the message composed — nothing is sent to
+          a third party, and nothing is stored on this site.
+        </p>
+
+        <div class="field">
+          <label for="cf-name">Your name</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="Siti Rahayu">
+          <p class="field__error" data-error-for="cf-name" hidden>Please tell me who you are.</p>
+        </div>
+
+        <div class="field">
+          <label for="cf-email">Your email</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
+          <p class="field__error" data-error-for="cf-email" hidden>That does not look like an email address.</p>
+        </div>
+
+        <div class="field">
+          <label for="cf-subject">Subject</label>
+          <select id="cf-subject" name="subject">
+            <option>A project I would like built</option>
+            <option>An internship or role</option>
+            <option>Freelance work</option>
+            <option>A collaboration</option>
+            <option>Something else entirely</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="6" required maxlength="2000" placeholder="What are you building, and what would you like me to do?"></textarea>
+          <p class="field__meta"><span id="cf-count">0</span> / 2000</p>
+          <p class="field__error" data-error-for="cf-message" hidden>A sentence or two is plenty, but I need something.</p>
+        </div>
+
+        <div class="form__actions">
+          <button class="btn btn--solid" type="submit">Compose the letter<span class="btn__arrow" aria-hidden="true">&rarr;</span></button>
+          <button class="btn btn--ghost" type="reset">Clear</button>
+        </div>
+        <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <aside class="contact__aside reveal">
+        <div class="panel">
+          <p class="panel__title">Direct</p>
+          <ul class="contact__list">
+            <li>
+              <span class="contact__label">Email</span>
+              <span class="contact__value">
+                <a href="mailto:ahmadandhikaharirie@gmail.com">ahmadandhikaharirie@gmail.com</a>
+                <button class="copy-btn" type="button" data-copy="ahmadandhikaharirie@gmail.com" aria-label="Copy the email address">Copy</button>
+              </span>
+            </li>
+            <li>
+              <span class="contact__label">GitHub</span>
+              <span class="contact__value"><a href="https://github.com/trustedtft07" target="_blank" rel="noopener">github.com/trustedtft07</a></span>
+            </li>
+            <li>
+              <span class="contact__label">Web</span>
+              <span class="contact__value"><a href="https://ahmadandhikaharirie.my.id">ahmadandhikaharirie.my.id</a></span>
+            </li>
+            <li>
+              <span class="contact__label">Hours</span>
+              <span class="contact__value">UTC+7 &middot; replies usually within a day</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel panel--quiet">
+          <p class="panel__title">Currently</p>
+          <p>
+            Open to internships and freelance projects. Spending my evenings on edge computing and
+            on the next Godot build.
+          </p>
+          <p class="availability"><span class="availability__dot" aria-hidden="true"></span> Available for new work</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ==========================================================================
+     COLOPHON
+     ======================================================================= -->
+<footer class="colophon" id="colophon">
+  <div class="shell">
+    <div class="rule rule--double"></div>
+
+    <div class="colophon__grid">
+      <div class="colophon__brand">
+        <p class="colophon__name">Ahmad Andhika Haririe</p>
+        <p class="colophon__tag">Full-stack, mobile &amp; game developer &middot; Indonesia</p>
+        <ul class="social social--compact" aria-label="Elsewhere">
+          <li><a href="https://github.com/trustedtft07" target="_blank" rel="me noopener">GitHub</a></li>
+          <li><a href="mailto:ahmadandhikaharirie@gmail.com">Email</a></li>
+          <li><a href="https://email.ahmadandhikaharirie.my.id" target="_blank" rel="noopener">Webmail</a></li>
+        </ul>
+      </div>
+
+      <nav class="colophon__nav" aria-label="Site map">
+        <p class="colophon__heading">Contents</p>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#craft">Craft</a></li>
+          <li><a href="#toolbox">Toolbox</a></li>
+          <li><a href="#work">Selected work</a></li>
+          <li><a href="#journey">Journey</a></li>
+        </ul>
+      </nav>
+
+      <nav class="colophon__nav" aria-label="More">
+        <p class="colophon__heading">More</p>
+        <ul>
+          <li><a href="#landmarks">Landmarks</a></li>
+          <li><a href="#notes">Notes</a></li>
+          <li><a href="#letters">Letters</a></li>
+          <li><a href="#contact">Correspondence</a></li>
+          <li><a href="https://github.com/trustedtft07?tab=repositories" target="_blank" rel="noopener">All repositories</a></li>
+        </ul>
+      </nav>
+
+      <div class="colophon__note">
+        <p class="colophon__heading">Colophon</p>
+        <p>
+          Set in <em>EB&nbsp;Garamond</em> and <em>Playfair&nbsp;Display</em>, with
+          <em>Courier&nbsp;Prime</em> for the marginalia. Written by hand in plain HTML, CSS and
+          JavaScript — no framework, no build step — and served from the Cloudflare edge.
+        </p>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <p class="colophon__legal">
+      <span>&copy; <span id="year">2026</span> Ahmad Andhika Haririe. All rights reserved.</span>
+      <span class="colophon__sep" aria-hidden="true">&bull;</span>
+      <span>Press <kbd>Ctrl</kbd>&nbsp;+&nbsp;<kbd>K</kbd> to search</span>
+    </p>
+  </div>
+</footer>
+
+<button class="to-top" type="button" id="to-top" aria-label="Back to the top" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+</button>
+
+<!-- ==========================================================================
+     DIALOGS
+     ======================================================================= -->
+<dialog class="modal" id="project-modal" aria-labelledby="modal-title">
+  <article class="modal__sheet">
+    <header class="modal__head">
+      <div>
+        <p class="modal__eyebrow" id="modal-eyebrow"></p>
+        <h2 class="modal__title" id="modal-title"></h2>
+      </div>
+      <button class="icon-btn modal__close" type="button" id="modal-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+    <div class="rule"></div>
+    <div class="modal__body" id="modal-body"></div>
+    <footer class="modal__foot">
+      <p class="modal__stack" id="modal-stack"></p>
+      <div class="modal__links" id="modal-links"></div>
+    </footer>
+  </article>
+</dialog>
+
+<dialog class="palette" id="palette" aria-label="Search this site">
+  <div class="palette__sheet">
+    <div class="palette__field">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <input class="palette__input" id="palette-input" type="text" placeholder="Jump to a section or a project…"
+             autocomplete="off" spellcheck="false" aria-controls="palette-results">
+      <kbd class="palette__esc">Esc</kbd>
+    </div>
+    <div class="rule"></div>
+    <ul class="palette__results" id="palette-results" role="listbox" aria-label="Results"></ul>
+    <p class="palette__empty" id="palette-empty" hidden>Nothing here by that name.</p>
+    <footer class="palette__foot">
+      <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> to move</span>
+      <span><kbd>&crarr;</kbd> to open</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </footer>
+  </div>
+</dialog>
+
+<!-- ==========================================================================
+     GLYPH SPRITE — line engravings used by the project plates
+     ======================================================================= -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="glyph-mail" viewBox="0 0 64 64">
+    <rect x="6" y="16" width="52" height="34" rx="2"/>
+    <path d="M7 18l25 18 25-18"/>
+    <path d="M6 50l19-15M58 50L39 35"/>
+    <path d="M32 4v7M25 7l3 5M39 7l-3 5"/>
+  </symbol>
+  <symbol id="glyph-wrench" viewBox="0 0 64 64">
+    <path d="M41 12a11 11 0 00-9 17L16 45a5 5 0 007 7l16-16a11 11 0 0013-16l-8 8-6-6 8-8a11 11 0 00-3-2z"/>
+    <circle cx="21" cy="47" r="1.6" class="fill"/>
+    <circle cx="46" cy="46" r="12"/>
+    <path d="M46 38v5M46 49v5M38 46h5M49 46h5"/>
+  </symbol>
+  <symbol id="glyph-leaf" viewBox="0 0 64 64">
+    <path d="M52 10c-24 0-38 10-38 26a17 17 0 0029 12c8-8 9-24 9-38z"/>
+    <path d="M50 12C36 22 26 34 18 54"/>
+    <path d="M10 56c4-2 8-3 12-3"/>
+  </symbol>
+  <symbol id="glyph-receipt" viewBox="0 0 64 64">
+    <path d="M14 6h36v52l-6-4-6 4-6-4-6 4-6-4-6 4z"/>
+    <path d="M22 18h20M22 27h20M22 36h12"/>
+    <rect x="38" y="33" width="8" height="8"/>
+  </symbol>
+  <symbol id="glyph-plant" viewBox="0 0 64 64">
+    <path d="M18 36h28l-3 20H21z"/>
+    <path d="M15 30h34v6H15z"/>
+    <path d="M32 30V16"/>
+    <path d="M32 22c0-7-5-11-12-11 0 7 5 11 12 11z"/>
+    <path d="M32 26c0-6 5-10 11-10 0 6-5 10-11 10z"/>
+  </symbol>
+  <symbol id="glyph-flame" viewBox="0 0 64 64">
+    <path d="M32 4c2 10-10 14-10 25a10 10 0 0020 0c0-5-3-8-3-12 5 3 9 9 9 16a16 16 0 11-32 0C16 20 28 16 32 4z"/>
+    <path d="M12 56h40"/>
+    <path d="M18 56l6-6M46 56l-6-6"/>
+  </symbol>
+  <symbol id="glyph-tower" viewBox="0 0 64 64">
+    <path d="M20 24h24v32H20z"/>
+    <path d="M16 24l4-8h24l4 8z"/>
+    <path d="M24 16v-6h4v6M36 16v-6h4v6"/>
+    <path d="M28 56V40h8v16"/>
+    <circle cx="32" cy="31" r="3"/>
+    <path d="M10 60h44"/>
+  </symbol>
+</svg>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://ahmadandhikaharirie.my.id/#person",
+      "name": "Ahmad Andhika Haririe",
+      "url": "https://ahmadandhikaharirie.my.id/",
+      "email": "mailto:ahmadandhikaharirie@gmail.com",
+      "jobTitle": "Full-stack, Mobile & Game Developer",
+      "description": "Developer building full-stack web applications, Flutter mobile apps, Cloudflare Workers services and Godot games.",
+      "knowsLanguage": ["id", "en"],
+      "knowsAbout": [
+        "React", "Svelte", "TypeScript", "Laravel", "PHP", "Flutter", "Dart",
+        "Cloudflare Workers", "Firebase", "Godot Engine", "GDScript", "Python", "REST API design"
+      ],
+      "sameAs": ["https://github.com/trustedtft07"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ahmadandhikaharirie.my.id/#website",
+      "url": "https://ahmadandhikaharirie.my.id/",
+      "name": "Ahmad Andhika Haririe",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://ahmadandhikaharirie.my.id/#person" }
+    },
+    {
+      "@type": "ProfilePage",
+      "url": "https://ahmadandhikaharirie.my.id/",
+      "name": "Ahmad Andhika Haririe — Portfolio",
+      "isPartOf": { "@id": "https://ahmadandhikaharirie.my.id/#website" },
+      "about": { "@id": "https://ahmadandhikaharirie.my.id/#person" },
+      "mainEntity": {
+        "@type": "ItemList",
+        "name": "Selected work",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "item": { "@type": "SoftwareApplication", "name": "Quickinbox", "applicationCategory": "CommunicationApplication", "operatingSystem": "Web", "url": "https://github.com/trustedtft07/quickmail" } },
+          { "@type": "ListItem", "position": 2, "item": { "@type": "SoftwareApplication", "name": "Bengkel Aja", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "url": "https://bengkel-aja.vercel.app" } },
+          { "@type": "ListItem", "position": 3, "item": { "@type": "SoftwareApplication", "name": "ZeroWaste", "applicationCategory": "LifestyleApplication", "operatingSystem": "Android, iOS", "url": "https://github.com/trustedtft07/ZeroWaste" } },
+          { "@type": "ListItem", "position": 4, "item": { "@type": "SoftwareApplication", "name": "POS UMKM", "applicationCategory": "FinanceApplication", "operatingSystem": "Android, iOS", "url": "https://github.com/trustedtft07/UasRPL" } },
+          { "@type": "ListItem", "position": 5, "item": { "@type": "SoftwareApplication", "name": "Garden Plants Manager", "applicationCategory": "DeveloperApplication", "operatingSystem": "Web", "url": "https://github.com/trustedtft07/garden-plants" } },
+          { "@type": "ListItem", "position": 6, "item": { "@type": "VideoGame", "name": "Finpro", "genre": "Action role-playing game", "gamePlatform": "PC", "url": "https://github.com/trustedtft07/Finpro" } },
+          { "@type": "ListItem", "position": 7, "item": { "@type": "VideoGame", "name": "Tower Defense", "genre": "Tower defense", "gamePlatform": "Android", "url": "https://github.com/trustedtft07/TowerDefense" } }
+        ]
+      }
+    }
+  ]
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,295 @@
+/* =============================================================================
+   LAYOUT — shell, top bar, drawer, sections, colophon
+   ========================================================================== */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-pad);
+}
+
+/* ---- Rules and ornaments ------------------------------------------------ */
+
+.rule {
+  height: 1px;
+  margin-block: var(--space-s);
+  background: var(--rule);
+}
+
+.rule--double {
+  height: 4px;
+  background: none;
+  border-top: 1px solid var(--rule-strong);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.ornament {
+  margin-top: var(--space-s);
+  color: var(--gold);
+  font-size: var(--step-1);
+  line-height: 1;
+}
+
+.numeral {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  color: var(--ink-mute);
+}
+
+/* ---- Top bar ------------------------------------------------------------ */
+
+.topbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-topbar);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid transparent;
+  transform: translateY(-100%);
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.topbar[data-elevated="true"] {
+  transform: none;
+  border-bottom-color: var(--rule);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  min-height: 4rem;
+}
+
+.topbar__mark {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.monogram-sm {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--step-0);
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.topbar__name {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.topbar__nav { margin-inline: auto; }
+
+.topbar__links {
+  display: flex;
+  gap: clamp(0.6rem, 1.6vw, 1.5rem);
+}
+
+.topbar__links a {
+  position: relative;
+  padding-block: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+
+.topbar__links a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--dur) var(--ease);
+}
+
+.topbar__links a:hover::after,
+.topbar__links a[aria-current="true"]::after { transform: none; }
+
+.topbar__links a[aria-current="true"] { color: var(--accent); }
+
+.topbar__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xs);
+}
+
+.topbar__burger { display: none; }
+
+.topbar__progress {
+  height: 2px;
+  background: color-mix(in srgb, var(--rule) 60%, transparent);
+}
+
+.topbar__progress > span {
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: var(--accent);
+}
+
+/* ---- Drawer ------------------------------------------------------------- */
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drawer);
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  animation: fade var(--dur) var(--ease);
+}
+
+.drawer__panel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(22rem, 86vw);
+  padding: var(--space-xl) var(--space-l);
+  background: var(--paper-raised);
+  border-left: 1px solid var(--rule-strong);
+  box-shadow: var(--shadow-dialog);
+  animation: slide-in var(--dur) var(--ease);
+  overflow-y: auto;
+}
+
+.drawer__title {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-bottom: var(--space-2xs);
+  border-bottom: 1px solid var(--rule);
+}
+
+.drawer__list { margin-block: var(--space-m); }
+
+.drawer__list a {
+  display: flex;
+  gap: var(--space-s);
+  padding-block: var(--space-2xs);
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 55%, transparent);
+}
+
+.drawer__close { width: 100%; }
+
+/* ---- Sections ----------------------------------------------------------- */
+
+.section { padding-block: clamp(3.5rem, 9vw, var(--space-3xl)); }
+
+.section--tinted {
+  background: var(--paper-tint);
+  border-block: 1px solid var(--rule);
+}
+
+.section__head {
+  max-width: 46rem;
+  margin-bottom: var(--space-xl);
+  text-align: center;
+  margin-inline: auto;
+}
+
+.section__numeral {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-wider);
+  color: var(--accent);
+}
+
+.section__title { margin-top: var(--space-2xs); }
+
+.section__standfirst {
+  margin-top: var(--space-s);
+  color: var(--ink-soft);
+  font-size: var(--step-0);
+  font-style: italic;
+}
+
+/* ---- Colophon ----------------------------------------------------------- */
+
+.colophon {
+  padding-block: var(--space-xl) var(--space-l);
+  background: var(--paper-deep);
+  border-top: 1px solid var(--rule-strong);
+}
+
+.colophon__grid {
+  display: grid;
+  gap: var(--space-l);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  padding-block: var(--space-l);
+}
+
+.colophon__brand { grid-column: span 2; }
+
+.colophon__name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+}
+
+.colophon__tag {
+  margin-top: var(--space-3xs);
+  color: var(--ink-mute);
+  font-style: italic;
+}
+
+.colophon__heading {
+  margin-bottom: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.colophon__nav a {
+  display: inline-block;
+  padding-block: 0.18rem;
+  font-size: var(--step--1);
+  text-decoration: none;
+}
+
+.colophon__note p {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.colophon__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  justify-content: center;
+  padding-top: var(--space-s);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  color: var(--ink-mute);
+  text-align: center;
+}
+
+.colophon__sep { color: var(--gold); }
+
+/* ---- Breakpoints -------------------------------------------------------- */
+
+@media (max-width: 62rem) {
+  .topbar__nav { display: none; }
+  .topbar__burger { display: inline-flex; }
+  .topbar__mark { margin-inline-end: auto; }
+}
+
+@media (max-width: 40rem) {
+  .topbar__name { display: none; }
+  .colophon__brand { grid-column: 1 / -1; }
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" class="no-js" data-theme="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Ahmad Andhika Haririe</title>
+<meta name="description" content="That page is not part of this edition.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/layout.css">
+<link rel="stylesheet" href="/assets/css/sections.css">
+<style>
+  .lost {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding-block: var(--space-xl);
+    text-align: center;
+  }
+  .lost__sheet {
+    max-width: 34rem;
+    padding: clamp(1.5rem, 5vw, var(--space-xl));
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-lift);
+  }
+  .lost__code {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--accent);
+    font-variant-numeric: lining-nums;
+  }
+  .lost__title { margin-block: var(--space-s) var(--space-2xs); }
+  .lost__text { color: var(--ink-soft); font-style: italic; }
+  .lost__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    justify-content: center;
+    margin-top: var(--space-l);
+  }
+</style>
+<script>
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) { /* storage blocked */ }
+    var dark = saved ? saved === 'night' : matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = dark ? 'night' : 'day';
+    document.documentElement.classList.remove('no-js');
+  })();
+</script>
+</head>
+<body>
+<main class="lost">
+  <div class="shell">
+    <div class="lost__sheet">
+      <div class="rule rule--double"></div>
+      <p class="dateline"><span>Erratum</span><span class="dateline__sep">&bull;</span><span>Page missing</span></p>
+      <div class="rule"></div>
+
+      <p class="lost__code">404</p>
+      <h1 class="lost__title" style="font-size: var(--step-2);">This page was never set in type</h1>
+      <p class="lost__text">
+        The address you followed does not appear anywhere in this edition. It may have been
+        withdrawn, or it may never have been printed at all.
+      </p>
+
+      <div class="lost__actions">
+        <a class="btn btn--solid" href="/">Return to the front page<span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+        <a class="btn btn--ghost" href="/#work">See the work</a>
+      </div>
+
+      <div class="rule rule--double" style="margin-top: var(--space-l);"></div>
+      <p class="ornament" aria-hidden="true">&#10086;</p>
+    </div>
+  </div>
+</main>
+</body>
+</html>

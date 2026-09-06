@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="A H">
+  <style>
+    :root { --bg: #f3eee2; --fg: #7c2f26; --line: #8d7f66; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #16130e; --fg: #d08a7d; --line: #6d5e45; }
+    }
+  </style>
+  <rect width="64" height="64" fill="var(--bg)"/>
+  <rect x="3.5" y="3.5" width="57" height="57" fill="none" stroke="var(--line)" stroke-width="1.6"/>
+  <rect x="7.5" y="7.5" width="49" height="49" fill="none" stroke="var(--line)" stroke-width="0.8"/>
+  <text x="32" y="45" text-anchor="middle" fill="var(--fg)"
+        font-family="Playfair Display, Georgia, serif" font-size="40" font-weight="900">A</text>
+</svg>
