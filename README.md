@@ -1,5 +1,3 @@
-# ahmadandhikaharirie.my.id
-
 Personal record of **Ahmad Andhika Haririe** — Informatics Engineering student at
 Universitas Sriwijaya, Palembang.
 
