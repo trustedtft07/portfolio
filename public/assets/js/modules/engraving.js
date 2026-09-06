@@ -527,7 +527,11 @@ export function initEngraving() {
 
     const settle = () => {
       const want = pose();
-      eased.turn += (want.turn - eased.turn) * 0.12;
+
+      /* A jump — an anchor, the palette, a restored position — should not make
+         the plate wind slowly through every act on the way. */
+      const gap = Math.abs(want.turn - eased.turn);
+      eased.turn += (want.turn - eased.turn) * (gap > 0.06 ? 0.45 : 0.12);
       eased.x += (want.x - eased.x) * 0.06;
       eased.y += (want.y - eased.y) * 0.06;
       eased.cx += (want.cx - eased.cx) * 0.22;
