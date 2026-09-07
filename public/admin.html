@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" class="no-js" data-theme="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The composing room &mdash; Ahmad Andhika Haririe</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f2ece0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17140f" media="(prefers-color-scheme: dark)">
+
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/layout.css">
+<link rel="stylesheet" href="/assets/css/studio.css">
+
+<script>
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) { /* storage blocked */ }
+    var dark = saved ? saved === 'night' : matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = dark ? 'night' : 'day';
+  })();
+</script>
+
+<script type="module" src="/assets/js/studio.js"></script>
+</head>
+
+<body class="studio-body">
+
+<!-- ==========================================================================
+     THE DOOR
+     ======================================================================= -->
+<main class="gate" id="gate" hidden>
+  <form class="gate__card" id="gate-form" autocomplete="on">
+    <p class="gate__kicker">Ahmad Andhika Haririe</p>
+    <h1 class="gate__title">The composing room</h1>
+    <div class="rule rule--double"></div>
+
+    <p class="gate__note">
+      The proprietor&rsquo;s entrance. Everything printed on the front of the house can be
+      reset from here &mdash; the wording, the lists, the photographs &mdash; without
+      touching the repository.
+    </p>
+
+    <div class="field">
+      <label for="gate-password">Password</label>
+      <input id="gate-password" name="password" type="password" autocomplete="current-password"
+             required autocapitalize="off" autocorrect="off" spellcheck="false">
+    </div>
+
+    <button class="btn btn--solid gate__submit" type="submit" id="gate-submit">
+      Unlock<span class="btn__arrow" aria-hidden="true">&rarr;</span>
+    </button>
+
+    <p class="gate__status" id="gate-status" role="status" aria-live="polite"></p>
+
+    <p class="gate__back"><a href="/">&larr; Back to the page</a></p>
+  </form>
+</main>
+
+<!-- ==========================================================================
+     THE ROOM
+     ======================================================================= -->
+<div class="studio" id="studio" hidden>
+
+  <header class="studio__bar">
+    <div class="studio__brand">
+      <span class="monogram-sm" aria-hidden="true">AAH</span>
+      <span class="studio__name">The composing room</span>
+    </div>
+
+    <nav class="studio__tabs" id="studio-tabs" aria-label="Sections of the studio">
+      <button class="studio__tab" type="button" data-tab="words" aria-selected="true">Words</button>
+      <button class="studio__tab" type="button" data-tab="lists" aria-selected="false">Lists</button>
+      <button class="studio__tab" type="button" data-tab="plates" aria-selected="false">Photographs</button>
+      <button class="studio__tab" type="button" data-tab="keys" aria-selected="false">Keys</button>
+    </nav>
+
+    <div class="studio__tools">
+      <a class="btn btn--sm" href="/" target="_blank" rel="noopener">View the page</a>
+      <button class="btn btn--sm btn--solid" type="button" id="studio-save" disabled>Save</button>
+      <button class="btn btn--sm btn--ghost" type="button" id="studio-out">Sign out</button>
+    </div>
+  </header>
+
+  <p class="studio__status" id="studio-status" role="status" aria-live="polite"></p>
+
+  <main class="studio__sheet">
+
+    <!-- ---- Words ------------------------------------------------------- -->
+    <section class="studio__panel" id="panel-words">
+      <header class="studio__head">
+        <h2>Words</h2>
+        <p>
+          Every passage of running text on the page. Anything left alone keeps the wording
+          that is written in the repository; <em>Restore</em> puts a changed passage back to it.
+          You can also edit these in place: open the page while signed in and click a paragraph.
+        </p>
+      </header>
+      <div id="words-list" class="studio__fields"></div>
+    </section>
+
+    <!-- ---- Lists ------------------------------------------------------- -->
+    <section class="studio__panel" id="panel-lists" hidden>
+      <header class="studio__head">
+        <h2>Lists</h2>
+        <p>
+          The repeated things: the craft cards, the record of the university years, the
+          certificates, the letters, the facts in the margin and the ribbon of tools.
+          Add, remove and reorder them here.
+        </p>
+      </header>
+      <div id="lists-list" class="studio__lists"></div>
+    </section>
+
+    <!-- ---- Photographs ------------------------------------------------- -->
+    <section class="studio__panel" id="panel-plates" hidden>
+      <header class="studio__head">
+        <h2>Photographs</h2>
+        <p>
+          Anything dropped here is shrunk to 1,600&nbsp;pixels in the browser before it is sent,
+          and then kept on Cloudflare&rsquo;s network under the fingerprint of its own bytes.
+          Photographs are hung from the <em>Lists</em> tab &mdash; and one of them can be the
+          portrait on the front page.
+        </p>
+      </header>
+
+      <div class="dropzone" id="dropzone">
+        <input class="sr-only" id="dropzone-input" type="file" accept="image/*" multiple>
+        <label class="dropzone__label" for="dropzone-input">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="5" y="13" width="38" height="26" rx="3"/><path d="M17 13l3-5h8l3 5"/>
+            <circle cx="24" cy="26" r="7"/>
+          </svg>
+          <span class="dropzone__text">Drop photographs here, or choose them</span>
+          <span class="dropzone__hint">JPEG, PNG, WebP &middot; up to 4&nbsp;MB each after shrinking</span>
+        </label>
+      </div>
+
+      <div class="portrait-slot" id="portrait-slot"></div>
+      <ul class="shelf" id="shelf"></ul>
+    </section>
+
+    <!-- ---- Keys -------------------------------------------------------- -->
+    <section class="studio__panel" id="panel-keys" hidden>
+      <header class="studio__head">
+        <h2>Keys</h2>
+        <p>
+          The password to this room. Changing it signs every other device out, and takes the
+          place of the one the site was deployed with.
+        </p>
+      </header>
+
+      <form class="studio__form card" id="password-form">
+        <div class="field">
+          <label for="pw-current">Current password</label>
+          <input id="pw-current" type="password" autocomplete="current-password" required>
+        </div>
+        <div class="field">
+          <label for="pw-next">New password</label>
+          <input id="pw-next" type="password" autocomplete="new-password" minlength="10" required>
+          <p class="field__meta">Ten characters at the very least. A short sentence is easier to type on a phone than a jumble.</p>
+        </div>
+        <div class="field">
+          <label for="pw-again">New password again</label>
+          <input id="pw-again" type="password" autocomplete="new-password" minlength="10" required>
+        </div>
+        <div class="form__actions">
+          <button class="btn btn--solid" type="submit">Change the password</button>
+        </div>
+        <p class="form__status" id="password-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="card studio__aside">
+        <p class="panel__title">How this works</p>
+        <p class="prose">
+          Nothing here is written into the repository. The page in <code>public/</code> stays the
+          printed default; the store on Cloudflare KV holds only what has been changed, and the
+          Worker sets one over the other as the page is served. Deleting an override &mdash;
+          <em>Restore</em>, on any field &mdash; hands the paragraph back to the file.
+        </p>
+        <p class="prose">
+          Edits are live within about a minute everywhere in the world; on your own connection
+          they are usually there at once.
+        </p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="studio__toast" id="toast" hidden></div>
+
+</body>
+</html>

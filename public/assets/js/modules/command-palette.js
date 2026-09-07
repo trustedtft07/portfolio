@@ -32,6 +32,18 @@ function collectEntries() {
     },
     {
       kind: 'Link',
+      label: 'Message on WhatsApp',
+      hint: '+62 822-8069-3457',
+      run: () => open('https://wa.me/6282280693457', '_blank', 'noopener'),
+    },
+    {
+      kind: 'Link',
+      label: 'Instagram',
+      hint: '@andhikaharirie7',
+      run: () => open('https://www.instagram.com/andhikaharirie7/', '_blank', 'noopener'),
+    },
+    {
+      kind: 'Link',
       label: 'LinkedIn profile',
       hint: 'ahmad-andhika-haririe',
       run: () => open('https://www.linkedin.com/in/ahmad-andhika-haririe/', '_blank', 'noopener'),

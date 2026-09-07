@@ -49,6 +49,11 @@ body::before { display: none; }
 .copy-btn,
 .colophon__nav,
 .availability,
+.grip,
+.instrument,
+.camera,
+.compositor,
+.plates-wrap,
 .signature svg { display: none !important; }
 
 /* Everything reveals itself; nothing animates. */

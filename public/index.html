@@ -38,6 +38,7 @@
 <link rel="stylesheet" href="/assets/css/components.css">
 <link rel="stylesheet" href="/assets/css/layout.css">
 <link rel="stylesheet" href="/assets/css/sections.css">
+<link rel="stylesheet" href="/assets/css/plate.css">
 <link rel="stylesheet" href="/assets/css/print.css" media="print">
 
 <script>
@@ -58,9 +59,14 @@
 
 <!-- ==========================================================================
      THE PLATE — a hidden-line 3D stage: a bust for the front matter, a
-     terrestrial globe from the education section onward.
+     terrestrial globe from the education section onward. It can be taken hold
+     of and turned, and opened out into a full-screen examination.
      ======================================================================= -->
 <canvas class="engraving" id="engraving" aria-hidden="true"></canvas>
+
+<!-- The circle of the page the plate actually occupies: the only part of the
+     backdrop that takes the pointer, so nothing else on the page loses a tap. -->
+<div class="grip" id="grip" hidden aria-hidden="true"></div>
 
 <div class="pins" id="engraving-pins" aria-hidden="true">
   <p class="pin" data-pin="jambi" style="--lift: -4.6rem; --arm: 3.4rem">
@@ -81,6 +87,74 @@
     <span class="pin__stem"></span>
     <span class="pin__dot"></span>
   </p>
+</div>
+
+<!-- The engraver's instrument panel. Hidden until the plate reports itself cut. -->
+<aside class="instrument" id="instrument" hidden aria-label="The plate">
+  <p class="instrument__title">
+    <span class="instrument__act" id="instrument-act">I</span>
+    <span class="instrument__subject" id="instrument-subject">The bust</span>
+  </p>
+  <div class="instrument__row">
+    <button class="instrument__btn" type="button" id="plate-turn" aria-pressed="false"
+            title="Let the plate turn on its own" aria-label="Let the plate turn on its own">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 11-2.6-5.9"/><path d="M20 3.5V8h-4.5"/></svg>
+    </button>
+    <button class="instrument__btn" type="button" id="plate-subject"
+            title="Change the subject" aria-label="Change the subject: bust or globe">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 3.6c3 3.4 3 13.4 0 16.8M12 3.6c-3 3.4-3 13.4 0 16.8M3.9 9.4h16.2M3.9 14.6h16.2"/></svg>
+    </button>
+    <button class="instrument__btn" type="button" id="plate-square"
+            title="Square the plate" aria-label="Return the plate to its printed position">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v15M4.5 12h15"/><circle cx="12" cy="12" r="4.2"/></svg>
+    </button>
+    <button class="instrument__btn instrument__btn--wide" type="button" id="plate-examine">
+      Examine
+    </button>
+  </div>
+  <p class="instrument__hint" id="instrument-hint">Drag the plate to turn it</p>
+</aside>
+
+<!-- The examination: the plate alone, at full strength, on any screen. -->
+<div class="camera" id="camera" hidden>
+  <div class="camera__scrim" id="camera-scrim"></div>
+
+  <div class="camera__frame">
+    <header class="camera__head">
+      <div class="camera__titling">
+        <p class="camera__kicker">Plate <span id="camera-act">II</span> &middot; examined</p>
+        <h2 class="camera__title" id="camera-title">The terrestrial globe</h2>
+      </div>
+      <button class="camera__close" type="button" id="camera-close" aria-label="Close the examination">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="camera__surface" id="camera-surface" role="application"
+         aria-label="The plate. Drag to turn it; use the arrow keys, plus and minus.">
+      <p class="camera__readout" id="camera-readout" aria-live="off"></p>
+    </div>
+
+    <div class="camera__card" id="camera-card" hidden>
+      <p class="camera__card-kicker" id="camera-card-kicker">Place</p>
+      <p class="camera__card-name" id="camera-card-name"></p>
+      <p class="camera__card-note" id="camera-card-note"></p>
+    </div>
+
+    <footer class="camera__foot">
+      <p class="camera__legend" id="camera-legend">
+        Drag to turn &middot; pinch or scroll to draw closer &middot; tap a marked place
+      </p>
+      <div class="camera__zoom">
+        <button class="instrument__btn" type="button" id="camera-out" aria-label="Draw back">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
+        </button>
+        <button class="instrument__btn" type="button" id="camera-in" aria-label="Draw closer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </footer>
+  </div>
 </div>
 
 <span class="dividers" id="dividers" aria-hidden="true"></span>
@@ -137,6 +211,9 @@
         <li><a href="#contact"><span class="numeral">VII</span> Correspondence</a></li>
       </ol>
     </nav>
+    <p class="drawer__aside">
+      <a class="drawer__signin" href="/admin">Proprietor&rsquo;s entrance &rarr;</a>
+    </p>
     <button class="btn btn--ghost drawer__close" type="button" id="drawer-close">Close</button>
   </div>
 </div>
@@ -163,9 +240,9 @@
 
       <div class="rule"></div>
 
-      <p class="frontpage__kicker">The personal record of</p>
+      <p class="frontpage__kicker" data-edit="front.kicker">The personal record of</p>
 
-      <h1 class="frontpage__name">
+      <h1 class="frontpage__name" data-edit="front.name">
         <span>Ahmad</span>
         <span>Andhika</span>
         <span>Haririe</span>
@@ -174,8 +251,9 @@
       <div class="rule"></div>
 
       <p class="frontpage__strap">
-        <span class="strap__static">Builds</span>
+        <span class="strap__static" data-edit="front.strapline">Builds</span>
         <span class="typewriter" id="typewriter" aria-live="polite"
+              data-edit="front.words" data-edit-attr="data-words"
               data-words="full-stack web applications|Flutter apps for Android &amp; iOS|services on the network edge|small worlds in Godot|things that ship on a deadline"></span><span class="caret" aria-hidden="true"></span>
       </p>
 
@@ -183,13 +261,7 @@
 
       <div class="frontpage__body">
         <figure class="portrait">
-          <div class="portrait__frame">
-            <!-- To use a photograph instead of the engraving, save it as
-                 /assets/img/portrait.jpg and uncomment the line below; the CSS
-                 hides the monogram whenever the photo is present.
-            <img class="portrait__photo" src="/assets/img/portrait.jpg" width="440" height="520"
-                 alt="Portrait of Ahmad Andhika Haririe">
-            -->
+          <div class="portrait__frame" data-slot="portrait">
             <svg class="monogram" viewBox="0 0 200 200" role="img" aria-label="Monogram: A A H">
               <circle class="monogram__ring" cx="100" cy="100" r="92"/>
               <circle class="monogram__ring monogram__ring--thin" cx="100" cy="100" r="85"/>
@@ -200,11 +272,11 @@
               <path class="monogram__flourish" d="M62 158q38 14 76 0"/>
             </svg>
           </div>
-          <figcaption class="portrait__caption">The proprietor, engraved</figcaption>
+          <figcaption class="portrait__caption" data-edit="front.portraitCaption">The proprietor, engraved</figcaption>
         </figure>
 
         <div class="frontpage__lede">
-          <p class="lede">
+          <p class="lede prose" data-edit="front.lede">
             <span class="dropcap">I</span> read Informatics Engineering at
             <em>Universitas Sriwijaya</em> in Palembang, and I build software the way a printer
             sets a page — carefully, and with a bias toward things that still read well years
@@ -212,7 +284,7 @@
             services that run at the edge on <em>Cloudflare Workers</em>; and, when the evening
             allows it, games in <em>Godot</em>.
           </p>
-          <p class="lede lede--small">
+          <p class="lede lede--small prose" data-edit="front.ledeSmall">
             Class of 2028. Two years into the degree, three game jams entered, and eleven months
             on the staff of the Informatics student association.
           </p>
@@ -224,6 +296,18 @@
           </div>
 
           <ul class="social" aria-label="Elsewhere">
+            <li>
+              <a href="https://wa.me/6282280693457" rel="me noopener" target="_blank" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M12.04 2A9.9 9.9 0 002.2 11.92a9.78 9.78 0 001.32 4.92L2 22.4l5.7-1.48a9.92 9.92 0 004.34 1h.01a9.9 9.9 0 009.85-9.92A9.86 9.86 0 0012.04 2zm0 18.02h-.01a8.2 8.2 0 01-4.16-1.14l-.3-.18-3.09.8.83-3-.2-.31a8.14 8.14 0 01-1.25-4.35 8.2 8.2 0 018.2-8.16 8.13 8.13 0 018.17 8.19 8.2 8.2 0 01-8.19 8.15zm4.5-6.1c-.24-.13-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12s-.63.8-.77.96-.28.19-.52.07a6.7 6.7 0 01-1.97-1.22 7.44 7.44 0 01-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.24-.29.37-.43.12-.15.16-.25.24-.41a.45.45 0 00-.02-.44c-.07-.12-.55-1.33-.75-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 00-.65.3 2.75 2.75 0 00-.86 2.05 4.78 4.78 0 001 2.54c.12.16 1.72 2.63 4.18 3.69a13.9 13.9 0 001.4.51 3.35 3.35 0 001.54.1 2.52 2.52 0 001.65-1.17 2.05 2.05 0 00.14-1.16c-.06-.1-.22-.16-.46-.28z"/></svg>
+                <span>WhatsApp</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/andhikaharirie7/" rel="me noopener" target="_blank" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.9" y="2.9" width="18.2" height="18.2" rx="5.2"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" class="fill"/></svg>
+                <span>Instagram</span>
+              </a>
+            </li>
             <li>
               <a href="https://www.linkedin.com/in/ahmad-andhika-haririe/" rel="me noopener" target="_blank" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M20.4 2.4H3.6a1.2 1.2 0 00-1.2 1.2v16.8a1.2 1.2 0 001.2 1.2h16.8a1.2 1.2 0 001.2-1.2V3.6a1.2 1.2 0 00-1.2-1.2zM8.3 18.7H5.4V9.7h2.9zM6.85 8.4a1.7 1.7 0 110-3.4 1.7 1.7 0 010 3.4zm11.85 10.3h-2.9v-4.4c0-1.05-.02-2.4-1.47-2.4-1.47 0-1.7 1.15-1.7 2.33v4.47H9.8V9.7h2.78v1.23h.04a3.05 3.05 0 012.74-1.5c2.93 0 3.47 1.93 3.47 4.43z"/></svg>
@@ -260,11 +344,11 @@
      TICKER
      ======================================================================= -->
 <div class="ticker" aria-hidden="true">
-  <div class="ticker__track">
-    <span class="ticker__group">
+  <div class="ticker__track" data-collection="ticker">
+    <span class="ticker__group" data-words>
       <b>React</b><i>&#10022;</i><b>TypeScript</b><i>&#10022;</i><b>Flutter</b><i>&#10022;</i><b>Laravel</b><i>&#10022;</i><b>Svelte</b><i>&#10022;</i><b>Cloudflare&nbsp;Workers</b><i>&#10022;</i><b>Firebase</b><i>&#10022;</i><b>Godot&nbsp;4</b><i>&#10022;</i><b>Tailwind&nbsp;CSS</b><i>&#10022;</i><b>Python</b><i>&#10022;</i><b>MySQL</b><i>&#10022;</i><b>Vite</b><i>&#10022;</i>
     </span>
-    <span class="ticker__group">
+    <span class="ticker__group" aria-hidden="true">
       <b>React</b><i>&#10022;</i><b>TypeScript</b><i>&#10022;</i><b>Flutter</b><i>&#10022;</i><b>Laravel</b><i>&#10022;</i><b>Svelte</b><i>&#10022;</i><b>Cloudflare&nbsp;Workers</b><i>&#10022;</i><b>Firebase</b><i>&#10022;</i><b>Godot&nbsp;4</b><i>&#10022;</i><b>Tailwind&nbsp;CSS</b><i>&#10022;</i><b>Python</b><i>&#10022;</i><b>MySQL</b><i>&#10022;</i><b>Vite</b><i>&#10022;</i>
     </span>
   </div>
@@ -277,14 +361,14 @@
   <div class="shell">
     <header class="section__head reveal">
       <p class="section__numeral">I</p>
-      <h2 class="section__title">About the author</h2>
-      <p class="section__standfirst">A short account of who is doing the building, and why.</p>
+      <h2 class="section__title" data-edit="about.title">About the author</h2>
+      <p class="section__standfirst" data-edit="about.standfirst">A short account of who is doing the building, and why.</p>
       <div class="ornament" aria-hidden="true">&#10086;</div>
     </header>
 
     <div class="about">
-      <div class="about__prose reveal">
-        <p>
+      <div class="about__prose prose reveal">
+        <p data-edit="about.p1">
           <span class="dropcap">M</span>y name is Ahmad Andhika Haririe. I am reading Informatics
           Engineering at Universitas Sriwijaya, in Palembang, South Sumatra, and I write software
           across an unusually wide field for one person: browser front-ends, PHP and JavaScript
@@ -292,14 +376,14 @@
           Godot. The through-line is not a framework — it is a preference for systems that a
           stranger can open six months later and still understand.
         </p>
-        <p>
+        <p data-edit="about.p2">
           Most of what I know has been learned twice: once in a lecture hall, and once at two in
           the morning against a deadline. The coursework taught me to model the data before
           drawing the screens. The game jams — three of them so far — taught me to finish.
           Eleven months on the staff of the Informatics student association taught me that a
           design file and a working build are two very different promises.
         </p>
-        <p>
+        <p data-edit="about.p3">
           I am comfortable owning a feature end to end — schema, API, interface, deployment — and
           I would rather ship something small that works than something large that demonstrates.
           At the moment I am spending my time on edge computing: this site, and the mail behind
@@ -317,20 +401,20 @@
             <path d="M266 40c-6 0-11 5-11 12s5 12 11 12c7 0 12-5 12-12"/>
             <path d="M40 78c60 10 140 8 216-6"/>
           </svg>
-          <figcaption>Set in Garamond, signed in ink.</figcaption>
+          <figcaption data-edit="about.signature">Set in Garamond, signed in ink.</figcaption>
         </figure>
       </div>
 
       <aside class="about__facts reveal">
         <div class="panel">
-          <p class="panel__title">In brief</p>
-          <dl class="facts">
-            <div><dt>Based in</dt><dd>Palembang, South Sumatra &middot; UTC+7</dd></div>
-            <div><dt>Reading</dt><dd>Informatics Engineering, Universitas Sriwijaya</dd></div>
-            <div><dt>Class of</dt><dd>2028 (expected)</dd></div>
-            <div><dt>Pronouns</dt><dd>He / him</dd></div>
-            <div><dt>Languages</dt><dd>Bahasa Indonesia, English</dd></div>
-            <div><dt>Open to</dt><dd>Internships, freelance, collaboration</dd></div>
+          <p class="panel__title" data-edit="about.factsTitle">In brief</p>
+          <dl class="facts" data-collection="facts">
+            <div data-item><dt data-field="term">Based in</dt><dd data-field="detail">Palembang, South Sumatra &middot; UTC+7</dd></div>
+            <div data-item><dt data-field="term">Reading</dt><dd data-field="detail">Informatics Engineering, Universitas Sriwijaya</dd></div>
+            <div data-item><dt data-field="term">Class of</dt><dd data-field="detail">2028 (expected)</dd></div>
+            <div data-item><dt data-field="term">Pronouns</dt><dd data-field="detail">He / him</dd></div>
+            <div data-item><dt data-field="term">Languages</dt><dd data-field="detail">Bahasa Indonesia, English</dd></div>
+            <div data-item><dt data-field="term">Open to</dt><dd data-field="detail">Internships, freelance, collaboration</dd></div>
           </dl>
           <a class="panel__link" href="#contact">Send a letter &rarr;</a>
         </div>
@@ -347,70 +431,70 @@
   <div class="shell">
     <header class="section__head reveal">
       <p class="section__numeral">II</p>
-      <h2 class="section__title">The craft</h2>
-      <p class="section__standfirst">Four kinds of work I take on, and what they actually involve.</p>
+      <h2 class="section__title" data-edit="craft.title">The craft</h2>
+      <p class="section__standfirst" data-edit="craft.standfirst">Four kinds of work I take on, and what they actually involve.</p>
       <div class="ornament" aria-hidden="true">&#10086;</div>
     </header>
 
-    <ul class="craft">
-      <li class="craft__item card reveal">
+    <ul class="craft" data-collection="craft">
+      <li class="craft__item card reveal" data-item data-icon="web">
         <span class="card__index" aria-hidden="true">01</span>
         <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
           <rect x="5" y="9" width="38" height="30" rx="2"/><path d="M5 17h38"/>
           <circle cx="10" cy="13" r="1.1" class="fill"/><circle cx="14.5" cy="13" r="1.1" class="fill"/>
           <path d="M15 24l-4 4 4 4M27 22l-4 12M33 24l4 4-4 4"/>
         </svg>
-        <h3 class="craft__title">Web applications</h3>
-        <p>
+        <h3 class="craft__title" data-field="title">Web applications</h3>
+        <p data-field="body">
           Component-driven front-ends in React or Svelte, wired to a Laravel, Node or Workers
           back-end. Authentication, roles, live data, and an admin surface that a non-engineer
           can actually operate.
         </p>
-        <p class="craft__meta">React &middot; Svelte &middot; Laravel &middot; Tailwind &middot; Vite</p>
+        <p class="craft__meta" data-field="meta">React &middot; Svelte &middot; Laravel &middot; Tailwind &middot; Vite</p>
       </li>
 
-      <li class="craft__item card reveal">
+      <li class="craft__item card reveal" data-item data-icon="mobile">
         <span class="card__index" aria-hidden="true">02</span>
         <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
           <rect x="14" y="5" width="20" height="38" rx="3"/><path d="M21 9.5h6"/>
           <circle cx="24" cy="37.5" r="1.6" class="fill"/><path d="M18 17h12M18 22h12M18 27h7"/>
         </svg>
-        <h3 class="craft__title">Mobile applications</h3>
-        <p>
+        <h3 class="craft__title" data-field="title">Mobile applications</h3>
+        <p data-field="body">
           One Flutter codebase, two stores. Offline-tolerant state, camera and barcode input,
           local notifications, and payment gateways wired up properly — QRIS included.
         </p>
-        <p class="craft__meta">Flutter &middot; Dart &middot; Firebase &middot; Midtrans</p>
+        <p class="craft__meta" data-field="meta">Flutter &middot; Dart &middot; Firebase &middot; Midtrans</p>
       </li>
 
-      <li class="craft__item card reveal">
+      <li class="craft__item card reveal" data-item data-icon="cloud">
         <span class="card__index" aria-hidden="true">03</span>
         <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
           <path d="M11 31a8 8 0 011.4-15.9A11 11 0 0133 17.5 7.6 7.6 0 0137 31z"/>
           <path d="M24 23v15M19 33l5 5 5-5"/>
         </svg>
-        <h3 class="craft__title">APIs &amp; edge services</h3>
-        <p>
+        <h3 class="craft__title" data-field="title">APIs &amp; edge services</h3>
+        <p data-field="body">
           REST APIs with sane resources and honest status codes, plus serverless services on
           Cloudflare Workers backed by D1 and R2 — no origin box to patch, and a cold start you
           cannot measure.
         </p>
-        <p class="craft__meta">Workers &middot; D1 &middot; R2 &middot; REST &middot; MySQL</p>
+        <p class="craft__meta" data-field="meta">Workers &middot; D1 &middot; R2 &middot; REST &middot; MySQL</p>
       </li>
 
-      <li class="craft__item card reveal">
+      <li class="craft__item card reveal" data-item data-icon="game">
         <span class="card__index" aria-hidden="true">04</span>
         <svg class="craft__icon" viewBox="0 0 48 48" aria-hidden="true">
           <rect x="4" y="15" width="40" height="20" rx="7"/><path d="M14 21v8M10 25h8"/>
           <circle cx="32" cy="23" r="2" class="fill"/><circle cx="37" cy="27.5" r="2" class="fill"/>
         </svg>
-        <h3 class="craft__title">Games &amp; interactive</h3>
-        <p>
+        <h3 class="craft__title" data-field="title">Games &amp; interactive</h3>
+        <p data-field="body">
           2D games in Godot and Unity: state-machine characters, encounters and wave systems,
           exported to desktop and Android — some for coursework, some against a
           forty-eight-hour game-jam clock.
         </p>
-        <p class="craft__meta">Godot 4 &middot; GDScript &middot; Unity &middot; Blender</p>
+        <p class="craft__meta" data-field="meta">Godot 4 &middot; GDScript &middot; Unity &middot; Blender</p>
       </li>
     </ul>
   </div>
@@ -423,35 +507,37 @@
   <div class="shell">
     <header class="section__head reveal">
       <p class="section__numeral">III</p>
-      <h2 class="section__title">Education</h2>
-      <p class="section__standfirst">
+      <h2 class="section__title" data-edit="education.title">Education</h2>
+      <p class="section__standfirst" data-edit="education.standfirst">
         The formal part of the record — where it happened, and when.
       </p>
       <div class="ornament" aria-hidden="true">&#10086;</div>
     </header>
 
-    <ol class="education">
-      <li class="education__item card reveal">
+    <ol class="education" data-collection="education">
+      <li class="education__item card reveal" data-item>
         <p class="education__period">
-          <time datetime="2024-06">Jun 2024</time> &ndash; <time datetime="2028-06">Jun 2028</time>
-          <span class="education__state">expected</span>
+          <time datetime="2024-06" data-field="from">Jun 2024</time> &ndash;
+          <time datetime="2028-06" data-field="to">Jun 2028</time>
+          <span class="education__state" data-field="state">expected</span>
         </p>
-        <h3 class="education__school">Universitas Sriwijaya</h3>
-        <p class="education__degree">Bachelor&rsquo;s degree &middot; Informatics Engineering</p>
-        <p>
+        <h3 class="education__school" data-field="school">Universitas Sriwijaya</h3>
+        <p class="education__degree" data-field="degree">Bachelor&rsquo;s degree &middot; Informatics Engineering</p>
+        <p data-field="body">
           The undergraduate programme in Palembang, South Sumatra — four years of it, of which
           two are behind me. It is where the reading list and the compiler started arguing with
           each other in public, which is the useful part.
         </p>
       </li>
 
-      <li class="education__item card reveal">
+      <li class="education__item card reveal" data-item>
         <p class="education__period">
-          <time datetime="2020-08">Aug 2020</time> &ndash; <time datetime="2023-05">May 2023</time>
+          <time datetime="2020-08" data-field="from">Aug 2020</time> &ndash;
+          <time datetime="2023-05" data-field="to">May 2023</time>
         </p>
-        <h3 class="education__school">MAN Insan Cendekia Jambi</h3>
-        <p class="education__degree">Senior high school &middot; MIPA — mathematics &amp; natural sciences</p>
-        <p>
+        <h3 class="education__school" data-field="school">MAN Insan Cendekia Jambi</h3>
+        <p class="education__degree" data-field="degree">Senior high school &middot; MIPA — mathematics &amp; natural sciences</p>
+        <p data-field="body">
           A state boarding madrasah in Jambi, on the sciences stream. The syllabus was
           mathematics and physics; the tools I picked up beside it were Android Studio and
           Blender, and they are the reason the rest of this page exists.
@@ -468,15 +554,15 @@
   <div class="shell">
     <header class="section__head reveal">
       <p class="section__numeral">IV</p>
-      <h2 class="section__title">At the university</h2>
-      <p class="section__standfirst">
+      <h2 class="section__title" data-edit="campus.title">At the university</h2>
+      <p class="section__standfirst" data-edit="campus.standfirst">
         What the degree looks like away from the lecture timetable: the student association,
         the committee work, and the weekends spent finishing something.
       </p>
       <div class="ornament" aria-hidden="true">&#10086;</div>
     </header>
 
-    <p class="campus__lede reveal">
+    <p class="campus__lede reveal" data-edit="campus.lede">
       Most of my time outside class at Universitas Sriwijaya has gone into
       <strong>Himpunan Mahasiswa Informatika</strong> — the Informatics student association —
       first on its creative team, then on the staff. The work is design and production: Figma
@@ -484,79 +570,85 @@
       to every one of them.
     </p>
 
-    <ol class="timeline">
-      <li class="timeline__item reveal">
-        <p class="timeline__date"><time datetime="2024-06">June 2024</time></p>
+    <ol class="timeline" data-collection="timeline">
+      <li class="timeline__item reveal" data-item>
+        <p class="timeline__date"><time datetime="2024-06" data-field="date">June 2024</time></p>
         <div class="timeline__card card">
-          <h3 class="timeline__title">Matriculated at Universitas Sriwijaya</h3>
-          <p>
+          <h3 class="timeline__title" data-field="title">Matriculated at Universitas Sriwijaya</h3>
+          <p data-field="body">
             Started the Informatics Engineering programme in Palembang, and moved from writing
             code for myself to writing it for a marker with a rubric.
           </p>
         </div>
       </li>
 
-      <li class="timeline__item reveal">
-        <p class="timeline__date"><time datetime="2024-10">October &ndash; December 2024</time></p>
+      <li class="timeline__item reveal" data-item>
+        <p class="timeline__date"><time datetime="2024-10" data-field="date">October &ndash; December 2024</time></p>
         <div class="timeline__card card">
-          <h3 class="timeline__title">Creative Team &mdash; Himpunan Mahasiswa Informatika</h3>
-          <p>
+          <h3 class="timeline__title" data-field="title">Creative Team &mdash; Himpunan Mahasiswa Informatika</h3>
+          <p data-field="body">
             Three months as a volunteer on the association&rsquo;s creative team: the visual side
             of the events the department runs for its own students.
           </p>
-          <p class="timeline__tags"><span class="tag">Volunteer</span><span class="tag">Design</span></p>
+          <p class="timeline__tags" data-field="tags"><span class="tag">Volunteer</span><span class="tag">Design</span></p>
         </div>
       </li>
 
-      <li class="timeline__item reveal">
-        <p class="timeline__date"><time datetime="2025-01">January 2025</time></p>
+      <li class="timeline__item reveal" data-item>
+        <p class="timeline__date"><time datetime="2025-01" data-field="date">January 2025</time></p>
         <div class="timeline__card card">
-          <h3 class="timeline__title">First game jam</h3>
-          <p>
+          <h3 class="timeline__title" data-field="title">First game jam</h3>
+          <p data-field="body">
             Global Game Jam Palembang 2025, run with Game Developer Palembang. A weekend, a
             theme, and a build at the end of it — made in Unity and dressed in Photoshop.
           </p>
-          <p class="timeline__tags"><span class="tag">Unity</span><span class="tag">Adobe Photoshop</span></p>
+          <p class="timeline__tags" data-field="tags"><span class="tag">Unity</span><span class="tag">Adobe Photoshop</span></p>
         </div>
       </li>
 
-      <li class="timeline__item reveal">
-        <p class="timeline__date"><time datetime="2025-02">February &ndash; December 2025</time></p>
+      <li class="timeline__item reveal" data-item>
+        <p class="timeline__date"><time datetime="2025-02" data-field="date">February &ndash; December 2025</time></p>
         <div class="timeline__card card">
-          <h3 class="timeline__title">Staff &mdash; Himpunan Mahasiswa Informatika</h3>
-          <p>
+          <h3 class="timeline__title" data-field="title">Staff &mdash; Himpunan Mahasiswa Informatika</h3>
+          <p data-field="body">
             Eleven months on the association&rsquo;s staff, part-time and hybrid, in Palembang.
             Figma and After Effects most weeks, and the ordinary committee discipline of getting
             a thing agreed, made and published before the event it was made for.
           </p>
-          <p class="timeline__tags"><span class="tag">Figma</span><span class="tag">After Effects</span><span class="tag">Hybrid</span></p>
+          <p class="timeline__tags" data-field="tags"><span class="tag">Figma</span><span class="tag">After Effects</span><span class="tag">Hybrid</span></p>
         </div>
       </li>
 
-      <li class="timeline__item reveal">
-        <p class="timeline__date"><time datetime="2025">2025</time></p>
+      <li class="timeline__item reveal" data-item>
+        <p class="timeline__date"><time datetime="2025" data-field="date">2025</time></p>
         <div class="timeline__card card">
-          <h3 class="timeline__title">Live2Dev Gamejam</h3>
-          <p>
+          <h3 class="timeline__title" data-field="title">Live2Dev Gamejam</h3>
+          <p data-field="body">
             A second jam, this one with Indie Games Group Indonesia — Blender for the modelling,
             Figma for the interface.
           </p>
-          <p class="timeline__tags"><span class="tag">Blender</span><span class="tag">Figma</span></p>
+          <p class="timeline__tags" data-field="tags"><span class="tag">Blender</span><span class="tag">Figma</span></p>
         </div>
       </li>
 
-      <li class="timeline__item reveal">
-        <p class="timeline__date"><time datetime="2026-02">February 2026</time></p>
+      <li class="timeline__item reveal" data-item data-now="true">
+        <p class="timeline__date"><time datetime="2026-02" data-field="date">February 2026</time></p>
         <div class="timeline__card card timeline__card--now">
-          <h3 class="timeline__title">Global Game Jam Palembang, again</h3>
-          <p>
+          <h3 class="timeline__title" data-field="title">Global Game Jam Palembang, again</h3>
+          <p data-field="body">
             Back for the 2026 edition: the same weekend format, a year more practice, and Krita
             in place of Photoshop.
           </p>
-          <p class="timeline__tags"><span class="tag">Figma</span><span class="tag">Krita</span></p>
+          <p class="timeline__tags" data-field="tags"><span class="tag">Figma</span><span class="tag">Krita</span></p>
         </div>
       </li>
     </ol>
+
+    <!-- Photographs. Empty in the repository; the studio hangs them here. -->
+    <section class="plates-wrap reveal" aria-labelledby="plates-heading">
+      <p class="plates__heading" id="plates-heading" data-edit="campus.platesHeading">Photographs</p>
+      <ul class="plates" data-collection="gallery"></ul>
+    </section>
   </div>
 </section>
 
@@ -567,34 +659,34 @@
   <div class="shell">
     <header class="section__head reveal">
       <p class="section__numeral">V</p>
-      <h2 class="section__title">Game jams &amp; certificates</h2>
-      <p class="section__standfirst">
+      <h2 class="section__title" data-edit="gamejams.title">Game jams &amp; certificates</h2>
+      <p class="section__standfirst" data-edit="gamejams.standfirst">
         Three weekends whose only requirement was to finish. Each one is a certificate on file,
         not a claim.
       </p>
       <div class="ornament" aria-hidden="true">&#10086;</div>
     </header>
 
-    <ul class="landmarks">
-      <li class="landmark reveal">
-        <span class="seal" aria-hidden="true"><span class="seal__inner">III</span></span>
-        <h3 class="landmark__title">Global Game Jam Palembang 2026</h3>
-        <p>
+    <ul class="landmarks" data-collection="gamejams">
+      <li class="landmark reveal" data-item>
+        <span class="seal" aria-hidden="true"><span class="seal__inner" data-field="numeral">III</span></span>
+        <h3 class="landmark__title" data-field="title">Global Game Jam Palembang 2026</h3>
+        <p data-field="body">
           Game Developer Palembang &middot; certificate issued February 2026.
           Made with Figma and Krita.
         </p>
       </li>
-      <li class="landmark reveal">
-        <span class="seal" aria-hidden="true"><span class="seal__inner">II</span></span>
-        <h3 class="landmark__title">Live2Dev Gamejam 2025</h3>
-        <p>
+      <li class="landmark reveal" data-item>
+        <span class="seal" aria-hidden="true"><span class="seal__inner" data-field="numeral">II</span></span>
+        <h3 class="landmark__title" data-field="title">Live2Dev Gamejam 2025</h3>
+        <p data-field="body">
           Indie Games Group Indonesia. Modelling in Blender, interface in Figma.
         </p>
       </li>
-      <li class="landmark reveal">
-        <span class="seal" aria-hidden="true"><span class="seal__inner">I</span></span>
-        <h3 class="landmark__title">Global Game Jam Palembang 2025</h3>
-        <p>
+      <li class="landmark reveal" data-item>
+        <span class="seal" aria-hidden="true"><span class="seal__inner" data-field="numeral">I</span></span>
+        <h3 class="landmark__title" data-field="title">Global Game Jam Palembang 2025</h3>
+        <p data-field="body">
           Game Developer Palembang &middot; certificate issued January 2025.
           Built in Unity, dressed in Adobe Photoshop.
         </p>
@@ -605,42 +697,28 @@
 
 <!-- ==========================================================================
      VI — LETTERS
-     To print a real recommendation, copy the <li class="letter"> block that is
-     commented out below, fill it in, and drop it into <ul class="letters">.
      ======================================================================= -->
 <section class="section section--tinted" id="letters">
   <div class="shell">
     <header class="section__head reveal">
       <p class="section__numeral">VI</p>
-      <h2 class="section__title">Letters</h2>
-      <p class="section__standfirst">
+      <h2 class="section__title" data-edit="letters.title">Letters</h2>
+      <p class="section__standfirst" data-edit="letters.standfirst">
         Notes from the people I have built things with — lecturers, teammates and clients.
       </p>
       <div class="ornament" aria-hidden="true">&#10086;</div>
     </header>
 
-    <ul class="letters">
-      <!--
-      <li class="letter card reveal">
-        <blockquote>
-          <p>The quoted recommendation goes here.</p>
-        </blockquote>
-        <footer class="letter__by">
-          <span class="letter__name">Full Name</span>
-          <span class="letter__role">Role, Organisation</span>
-        </footer>
-      </li>
-      -->
-
-      <li class="letter letter--empty card reveal">
+    <ul class="letters" data-collection="letters">
+      <li class="letter letter--empty card reveal" data-empty>
         <svg class="quill" viewBox="0 0 64 64" aria-hidden="true">
           <path d="M50 12C34 14 22 24 18 38c-1 4-3 7-6 10l4 4c3-3 6-5 10-6 14-4 24-16 24-34z"/>
           <path d="M12 52l16-16"/>
           <path d="M30 34h10"/>
         </svg>
-        <p class="letter__prompt">
-          This column is set, but nothing has been printed in it yet. If we have worked together —
-          on coursework, on a client project, or on anything with a deadline — I would be glad to
+        <p class="letter__prompt" data-edit="letters.prompt">
+          This column is set, but nothing has been printed in it yet. If we have worked together &mdash;
+          on coursework, on a client project, or on anything with a deadline &mdash; I would be glad to
           run your words here.
         </p>
         <a class="btn btn--sm" href="mailto:ahmadandhikaharirie@gmail.com?subject=A%20letter%20for%20your%20portfolio">Write a letter</a>
@@ -656,8 +734,8 @@
   <div class="shell">
     <header class="section__head reveal">
       <p class="section__numeral">VII</p>
-      <h2 class="section__title">Correspondence</h2>
-      <p class="section__standfirst">
+      <h2 class="section__title" data-edit="contact.title">Correspondence</h2>
+      <p class="section__standfirst" data-edit="contact.standfirst">
         Available for internships, freelance work and collaboration. Tell me what you are trying
         to build and I will tell you honestly whether I am the right person for it.
       </p>
@@ -666,9 +744,10 @@
 
     <div class="contact">
       <form class="contact__form card reveal" id="contact-form" novalidate>
-        <p class="form__note">
+        <p class="form__note" data-edit="contact.note">
           This form opens your own mail application with the message composed — nothing is sent to
-          a third party, and nothing is stored on this site.
+          a third party, and nothing is stored on this site. In a hurry? The WhatsApp number is
+          beside it.
         </p>
 
         <div class="field">
@@ -703,6 +782,7 @@
 
         <div class="form__actions">
           <button class="btn btn--solid" type="submit">Compose the letter<span class="btn__arrow" aria-hidden="true">&rarr;</span></button>
+          <a class="btn" id="wa-send" href="https://wa.me/6282280693457" target="_blank" rel="noopener">Send on WhatsApp</a>
           <button class="btn btn--ghost" type="reset">Clear</button>
         </div>
         <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
@@ -710,41 +790,42 @@
 
       <aside class="contact__aside reveal">
         <div class="panel">
-          <p class="panel__title">Direct</p>
-          <ul class="contact__list">
-            <li>
-              <span class="contact__label">Email</span>
-              <span class="contact__value">
-                <a href="mailto:ahmadandhikaharirie@gmail.com">ahmadandhikaharirie@gmail.com</a>
-                <button class="copy-btn" type="button" data-copy="ahmadandhikaharirie@gmail.com" aria-label="Copy the email address">Copy</button>
-              </span>
+          <p class="panel__title" data-edit="contact.directTitle">Direct</p>
+          <ul class="contact__list" data-collection="contact">
+            <li data-item data-copy="ahmadandhikaharirie@gmail.com">
+              <span class="contact__label" data-field="label">Email</span>
+              <span class="contact__value"><span data-field="value"><a href="mailto:ahmadandhikaharirie@gmail.com">ahmadandhikaharirie@gmail.com</a></span><button class="copy-btn" type="button" data-copy="ahmadandhikaharirie@gmail.com" aria-label="Copy the email">Copy</button></span>
             </li>
-            <li>
-              <span class="contact__label">LinkedIn</span>
-              <span class="contact__value"><a href="https://www.linkedin.com/in/ahmad-andhika-haririe/" target="_blank" rel="noopener">in/ahmad-andhika-haririe</a></span>
+            <li data-item data-copy="+6282280693457">
+              <span class="contact__label" data-field="label">WhatsApp</span>
+              <span class="contact__value"><span data-field="value"><a href="https://wa.me/6282280693457" target="_blank" rel="noopener">+62 822-8069-3457</a></span><button class="copy-btn" type="button" data-copy="+6282280693457" aria-label="Copy the whatsapp">Copy</button></span>
             </li>
-            <li>
-              <span class="contact__label">GitHub</span>
-              <span class="contact__value"><a href="https://github.com/trustedtft07" target="_blank" rel="noopener">github.com/trustedtft07</a></span>
+            <li data-item>
+              <span class="contact__label" data-field="label">Instagram</span>
+              <span class="contact__value"><span data-field="value"><a href="https://www.instagram.com/andhikaharirie7/" target="_blank" rel="noopener">@andhikaharirie7</a></span></span>
             </li>
-            <li>
-              <span class="contact__label">Web</span>
-              <span class="contact__value"><a href="https://ahmadandhikaharirie.my.id">ahmadandhikaharirie.my.id</a></span>
+            <li data-item>
+              <span class="contact__label" data-field="label">LinkedIn</span>
+              <span class="contact__value"><span data-field="value"><a href="https://www.linkedin.com/in/ahmad-andhika-haririe/" target="_blank" rel="noopener">in/ahmad-andhika-haririe</a></span></span>
             </li>
-            <li>
-              <span class="contact__label">Hours</span>
-              <span class="contact__value">UTC+7 &middot; replies usually within a day</span>
+            <li data-item>
+              <span class="contact__label" data-field="label">GitHub</span>
+              <span class="contact__value"><span data-field="value"><a href="https://github.com/trustedtft07" target="_blank" rel="noopener">github.com/trustedtft07</a></span></span>
+            </li>
+            <li data-item>
+              <span class="contact__label" data-field="label">Hours</span>
+              <span class="contact__value"><span data-field="value">UTC+7 &middot; replies usually within a day</span></span>
             </li>
           </ul>
         </div>
 
         <div class="panel panel--quiet">
-          <p class="panel__title">Currently</p>
-          <p>
+          <p class="panel__title" data-edit="contact.currentlyTitle">Currently</p>
+          <p class="prose" data-edit="contact.currently">
             In the third year of the Informatics Engineering programme at Universitas Sriwijaya,
             and open to internships and freelance projects around it.
           </p>
-          <p class="availability"><span class="availability__dot" aria-hidden="true"></span> Available for new work</p>
+          <p class="availability"><span class="availability__dot" aria-hidden="true"></span> <span data-edit="contact.availability">Available for new work</span></p>
         </div>
       </aside>
     </div>
@@ -763,8 +844,10 @@
     <div class="colophon__grid">
       <div class="colophon__brand">
         <p class="colophon__name">Ahmad Andhika Haririe</p>
-        <p class="colophon__tag">Informatics Engineering student &middot; Palembang, Indonesia</p>
+        <p class="colophon__tag" data-edit="colophon.tag">Informatics Engineering student &middot; Palembang, Indonesia</p>
         <ul class="social social--compact" aria-label="Elsewhere">
+          <li><a href="https://wa.me/6282280693457" target="_blank" rel="me noopener">WhatsApp</a></li>
+          <li><a href="https://www.instagram.com/andhikaharirie7/" target="_blank" rel="me noopener">Instagram</a></li>
           <li><a href="https://www.linkedin.com/in/ahmad-andhika-haririe/" target="_blank" rel="me noopener">LinkedIn</a></li>
           <li><a href="https://github.com/trustedtft07" target="_blank" rel="me noopener">GitHub</a></li>
           <li><a href="mailto:ahmadandhikaharirie@gmail.com">Email</a></li>
@@ -786,12 +869,13 @@
         <ul>
           <li><a href="#letters">Letters</a></li>
           <li><a href="#contact">Correspondence</a></li>
+          <li><a href="/admin" rel="nofollow">Proprietor&rsquo;s entrance</a></li>
         </ul>
       </nav>
 
       <div class="colophon__note">
         <p class="colophon__heading">Colophon</p>
-        <p>
+        <p data-edit="colophon.note">
           Set in <em>EB&nbsp;Garamond</em> and <em>Playfair&nbsp;Display</em>, with
           <em>Courier&nbsp;Prime</em> for the marginalia. Written by hand in plain HTML, CSS and
           JavaScript — no framework, no build step — and served from the Cloudflare edge.
@@ -853,6 +937,7 @@
       "name": "Ahmad Andhika Haririe",
       "url": "https://ahmadandhikaharirie.my.id/",
       "email": "mailto:ahmadandhikaharirie@gmail.com",
+      "telephone": "+62-822-8069-3457",
       "jobTitle": "Informatics Engineering Student",
       "description": "Informatics Engineering student at Universitas Sriwijaya in Palembang, building web, mobile and game software.",
       "homeLocation": {
@@ -880,7 +965,9 @@
       ],
       "sameAs": [
         "https://github.com/trustedtft07",
-        "https://www.linkedin.com/in/ahmad-andhika-haririe/"
+        "https://www.linkedin.com/in/ahmad-andhika-haririe/",
+        "https://www.instagram.com/andhikaharirie7/",
+        "https://wa.me/6282280693457"
       ]
     },
     {

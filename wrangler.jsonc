@@ -1,17 +1,28 @@
 {
-  // Static-assets Worker: no server code, just ./public served from the edge.
-  // https://developers.cloudflare.com/workers/static-assets/
+  // A Worker in front of ./public: the same static site, streamed through
+  // HTMLRewriter so the studio's edits are already in the page when it leaves
+  // the edge. https://developers.cloudflare.com/workers/static-assets/
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
+  "main": "src/index.js",
   "compatibility_date": "2026-09-06",
 
   "assets": {
     "directory": "./public",
+    "binding": "ASSETS",
+    // The Worker sees every request, so it can rewrite the document and answer
+    // /api and /media before the folder is consulted.
+    "run_worker_first": true,
     // Serve /404.html for anything that does not exist.
     "not_found_handling": "404-page",
     // /about and /about/ resolve to the same page.
     "html_handling": "auto-trailing-slash"
   },
+
+  // The studio's store: the content overrides, the photographs, the password.
+  "kv_namespaces": [
+    { "binding": "CONTENT", "id": "6c390d5122ed46a3b3f169dfea3ab5a9" }
+  ],
 
   // Wrangler creates the DNS records for these on deploy.
   "routes": [

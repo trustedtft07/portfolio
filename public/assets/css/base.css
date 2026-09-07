@@ -93,6 +93,36 @@ h4 { font-size: var(--step-0); }
 
 p { text-wrap: pretty; }
 
+/* ---- Setting the measure ------------------------------------------------ */
+
+/*
+ * Running text is justified, the way a broadsheet sets it, with the browser's
+ * own hyphenation dictionary doing the work a compositor would: without it,
+ * justification on a narrow column opens rivers of white down the page.
+ * Anything centred, tabular or set in the marginalia keeps its ragged edge.
+ */
+.prose,
+.prose p,
+.lede,
+.about__prose p,
+.craft__item > p:not(.craft__meta),
+.education__item > p:not(.education__period):not(.education__degree),
+.timeline__card > p:not(.timeline__tags),
+.letter__prompt,
+.form__note,
+.panel--quiet p,
+.colophon__note > p:not(.colophon__heading) {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 6 3 3;
+}
+
+/* A dropcap sits in the first line: it must not be justified away from it. */
+.prose .dropcap,
+.lede .dropcap { hyphens: manual; }
+
 em { font-style: italic; }
 
 strong { font-weight: 600; }

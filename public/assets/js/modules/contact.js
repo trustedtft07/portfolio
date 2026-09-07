@@ -7,6 +7,7 @@
  */
 
 const ADDRESS = 'ahmadandhikaharirie@gmail.com';
+const WHATSAPP = '6282280693457';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const COPY_FEEDBACK_MS = 1800;
 
@@ -94,8 +95,28 @@ function wireForm(form) {
   });
 }
 
+/**
+ * The same letter, carried to WhatsApp instead of a mail client. The link works
+ * on its own if the form is empty, so it is never a dead end.
+ */
+function wireWhatsApp(form) {
+  const link = document.getElementById('wa-send');
+  if (!link) return;
+
+  link.addEventListener('click', () => {
+    const name = form?.elements.name.value.trim() ?? '';
+    const message = form?.elements.message.value.trim() ?? '';
+    if (message.length < 2) { link.href = `https://wa.me/${WHATSAPP}`; return; }
+
+    const text = name ? `${message}
+
+— ${name}` : message;
+    link.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+  });
+}
+
 function wireCopyButtons() {
-  for (const button of document.querySelectorAll('[data-copy]')) {
+  for (const button of document.querySelectorAll('button[data-copy]')) {
     button.addEventListener('click', async () => {
       const original = button.textContent;
 
@@ -118,5 +139,6 @@ function wireCopyButtons() {
 export function initContact() {
   const form = document.getElementById('contact-form');
   if (form) wireForm(form);
+  wireWhatsApp(form);
   wireCopyButtons();
 }

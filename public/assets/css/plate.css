@@ -1,0 +1,444 @@
+/* =============================================================================
+   THE PLATE — the grip, the instrument panel, and the examination
+   Loaded after sections.css so it can raise the canvas above the page when the
+   plate is opened out on its own.
+   ========================================================================== */
+
+/* ---- The grip ------------------------------------------------------------ */
+
+/* The one circle of the backdrop that takes the pointer: the disc the solid
+   actually occupies, and nothing else. It is placed by the module every frame,
+   and never appears at all for a coarse pointer — a thumb over the middle of
+   the column would swallow taps meant for the text. */
+.grip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 41;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+.grip[data-held] { cursor: grabbing; }
+
+.grip::after {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border: 1px dashed color-mix(in srgb, var(--accent) 26%, transparent);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.grip:hover::after,
+.grip[data-held]::after { opacity: 1; }
+
+@media (hover: none), (pointer: coarse) {
+  .grip { display: none; }
+}
+
+/* ---- The instrument panel ------------------------------------------------ */
+
+.instrument {
+  position: fixed;
+  left: clamp(0.75rem, 3vw, 2rem);
+  bottom: clamp(0.75rem, 3vw, 2rem);
+  z-index: 50;
+  width: max-content;
+  max-width: min(19rem, calc(100vw - 1.5rem));
+  padding: var(--space-2xs) var(--space-xs) var(--space-xs);
+  background: color-mix(in srgb, var(--paper-raised) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  animation: fade var(--dur-slow) var(--ease);
+}
+
+.instrument__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  padding-bottom: var(--space-3xs);
+  margin-bottom: var(--space-2xs);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.instrument__act { color: var(--accent); font-weight: 700; }
+
+.instrument__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xs);
+}
+
+.instrument__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink-soft);
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+
+.instrument__btn:hover { color: var(--accent); border-color: var(--accent); }
+
+.instrument__btn[aria-pressed="true"] {
+  color: var(--paper-raised);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.instrument__btn svg { width: 1rem; height: 1rem; }
+
+.instrument__btn--wide {
+  width: auto;
+  padding-inline: 0.7rem;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.instrument__hint {
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  font-style: italic;
+  color: var(--ink-mute);
+}
+
+/* On a narrow screen the panel is a corner of the page, not a column of it. */
+@media (max-width: 40rem) {
+  .instrument { padding: 0.3rem 0.5rem 0.4rem; }
+  .instrument__hint { display: none; }
+
+  .instrument__title {
+    padding-bottom: 0.15rem;
+    margin-bottom: 0.3rem;
+  }
+}
+
+/* The panel would only be in the way while the plate is being examined. */
+body[data-plate="focus"] .instrument,
+body[data-plate="focus"] .to-top { display: none; }
+
+/* ---- The examination ----------------------------------------------------- */
+
+.camera {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  animation: fade var(--dur) var(--ease);
+}
+
+.camera__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+}
+
+/* The same laid grain the page is printed on, so the sheet does not read flat. */
+.camera__scrim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: var(--grain-opacity);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(120, 100, 70, 0.035) 3px 4px),
+    repeating-linear-gradient(90deg, transparent 0 3px, rgba(120, 100, 70, 0.025) 3px 4px);
+}
+
+/* The plate itself is lifted between the scrim and this chrome, so it is drawn
+   over the page but under the controls. */
+body[data-plate="focus"] .engraving {
+  z-index: 71;
+  opacity: 1;
+}
+
+body[data-plate="focus"] .pins {
+  display: block;
+  z-index: 71;
+}
+
+.camera__frame {
+  position: relative;
+  z-index: 72;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  height: 100dvh;
+  pointer-events: none;
+}
+
+.camera__frame > * { pointer-events: auto; }
+
+.camera__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-s);
+  padding: var(--space-s) var(--shell-pad) var(--space-2xs);
+  border-bottom: 1px solid var(--rule);
+  background: linear-gradient(var(--paper) 62%, transparent);
+}
+
+.camera__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.camera__title {
+  font-size: var(--step-2);
+  line-height: var(--leading-tight);
+}
+
+.camera__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+}
+
+.camera__close:hover { color: var(--accent); border-color: var(--accent); }
+.camera__close svg { width: 1.15rem; height: 1.15rem; }
+
+/* The whole middle of the screen is the plate's, on every device. */
+.camera__surface {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  touch-action: none;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.camera__surface[data-held] { cursor: grabbing; }
+
+.camera__readout:empty { display: none; }
+
+.camera__readout {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-2xs);
+  transform: translateX(-50%);
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--paper-raised) 86%, transparent);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  white-space: nowrap;
+}
+
+.camera__card {
+  position: absolute;
+  left: var(--shell-pad);
+  bottom: 7.5rem;
+  z-index: 73;
+  width: min(19rem, calc(100vw - 2 * var(--shell-pad)));
+  padding: var(--space-s) var(--space-m);
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  animation: rise var(--dur) var(--ease);
+}
+
+.camera__card-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.camera__card-name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+}
+
+.camera__card-note {
+  margin-top: var(--space-3xs);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.camera__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xs) var(--space-s);
+  padding: var(--space-2xs) var(--shell-pad) var(--space-s);
+  border-top: 1px solid var(--rule);
+  background: linear-gradient(transparent, var(--paper) 38%);
+}
+
+.camera__legend {
+  flex: 1 1 14rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  color: var(--ink-mute);
+}
+
+.camera__places {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3xs);
+}
+
+.camera__place {
+  padding: 0.28rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+.camera__place:hover { color: var(--accent); border-color: var(--accent); }
+
+.camera__zoom {
+  display: flex;
+  gap: var(--space-3xs);
+  margin-left: auto;
+}
+
+@media (max-width: 40rem) {
+  .camera__title { font-size: var(--step-1); }
+  .camera__card { bottom: 8.5rem; }
+  .camera__legend { flex-basis: 100%; }
+}
+
+/* ---- Photographs --------------------------------------------------------- */
+
+.plates-wrap {
+  max-width: 52rem;
+  margin: var(--space-xl) auto 0;
+  padding-top: var(--space-m);
+  border-top: 1px solid var(--rule);
+}
+
+/* An empty column of plates prints nothing at all. */
+.plates:empty { display: none; }
+.plates-wrap:has(.plates:empty) { display: none; }
+
+.plates__heading {
+  margin-bottom: var(--space-m);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink-mute);
+}
+
+.plates {
+  display: grid;
+  gap: var(--space-m);
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+}
+
+.plate__figure { margin: 0; }
+
+.plate__frame {
+  display: block;
+  padding: var(--space-3xs);
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-strong);
+  outline: 1px solid var(--rule);
+  outline-offset: 3px;
+}
+
+.plate__img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  filter: sepia(0.22) contrast(1.04) saturate(0.9);
+}
+
+:root[data-theme="night"] .plate__img { filter: sepia(0.16) contrast(1.02) saturate(0.82) brightness(0.92); }
+
+.plate__caption {
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink-mute);
+}
+
+/* A photograph inside a timeline entry or a certificate. */
+.timeline__figure,
+.landmark__figure {
+  margin: var(--space-s) 0 0;
+  padding: var(--space-3xs);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.timeline__photo,
+.landmark__photo {
+  width: 100%;
+  max-height: 18rem;
+  object-fit: cover;
+  filter: sepia(0.22) contrast(1.04) saturate(0.9);
+}
+
+/* ---- The proprietor's entrance ------------------------------------------- */
+
+.drawer__aside {
+  margin-bottom: var(--space-m);
+  padding-top: var(--space-2xs);
+  border-top: 1px dotted var(--rule);
+}
+
+.drawer__signin {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-mute);
+}
+
+.drawer__signin:hover { color: var(--accent); }
+
+/* ---- Reduced motion ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .camera,
+  .camera__card { animation: none; }
+}
