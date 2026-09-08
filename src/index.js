@@ -193,6 +193,14 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    /* The record keeps one address. `www` is only a signpost to it, and says
+       so permanently, so a search engine is never left holding two pages that
+       are the same page. */
+    if (url.hostname.startsWith('www.')) {
+      url.hostname = url.hostname.slice('www.'.length);
+      return Response.redirect(url.toString(), 301);
+    }
+
     if (url.pathname.startsWith('/api/')) return handleApi(request, env, url);
     if (url.pathname.startsWith('/media/')) return handleMedia(env, url);
 
